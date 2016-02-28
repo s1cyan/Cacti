@@ -7,3 +7,7 @@
 # Virtualenv Files
 /[Vv]env/
 /[Ee]nv/
+/boop/
+
+# Jetbrains Related Folders
+/.idea/
