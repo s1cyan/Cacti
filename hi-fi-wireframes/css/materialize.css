@@ -2229,6 +2229,19 @@ section,
 summary {
   display: block;
 }
+header, main, footer{
+  padding-left: 240px;
+}
+
+@media only screen and (max-width : 992px){
+  header, main, footer{
+    padding-left: 0;
+  }
+}
+/*main{
+  max-width: 600px;
+  margin: 0 auto;
+}*/
 
 /**
  * 1. Correct `inline-block` display not defined in IE 8/9.
