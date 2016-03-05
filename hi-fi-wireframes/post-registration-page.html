@@ -7,7 +7,6 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
         <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-        <script src="js/materialize.js"></script>
     </head>
 
     <body>
@@ -16,19 +15,43 @@
                 <br>
                 <h1 class="header center orange-text">Cacti</h1>
                 <div class="row center">
-                    <h5 class="header col s12 light">Let's get you signed up with this service.<h5>
+                    <h5 class="header col s12 light">Add a time frame when you're not free. We'll keep track of this.<h5>
                 </div>
-                <div class="row center">
-                    <form class="col s6 offset-s3">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <select class="browser-default">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                </select>
-                            </div>
-                    </form>
-                </div>
+            </div>
+            <div class="row center">
+                <form class="col s6 offset-s3">
+                    <div class="row">
+                        <h4>Start Time:</h4>
+                        <div class="input-field col s6">
+                            <input id="email" type="number" class="validate" length="2">
+                            <label class="active" for="email">Hour:</label>
+                        </div>
+
+                        <div class="input-field col s6">
+                            <input id="username" type="number" class="validate" length="2">
+                            <label class="active" for="username">Minute:</label>
+                        </div>
+                        
+                        <br>
+                        <h4>End Time:</h4>
+                        <div class="input-field col s6">
+                            <input id="email" type="number" class="validate" length="2">
+                            <label class="active" for="email">Hour:</label>
+                        </div>
+
+                        <div class="input-field col s6">
+                            <input id="username" type="number" class="validate" length="2">
+                            <label class="active" for="username">Minute:</label>
+                        </div>
+
+                        <div class="select-wrapper">
+                            <span class="caret"></span>
+                            <input class="select-dropdown" type="text" value="Choose the days" data-activates="days" readonly="true"></input>
+                            <ul id="days">
+                        </div>
+                    </div>
+                    <a class="waves-effect waves-light btn-large" href="#">Add Another Time Frame</a>
+                </form>
             </div>
         </div>
     </body>
