@@ -11,3 +11,6 @@
 
 # Jetbrains Related Folders
 /.idea/
+
+# Orig data
+*.orig
