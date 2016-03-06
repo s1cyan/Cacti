@@ -9,10 +9,12 @@
 </head>
 <body>
 
+<!--upper nav bar-->
 
 <div class="navbar-fixed">
-	<nav>
+	<nav class="top-nav">
 		<div class="nav-wrapper deep-orange">
+			<a href="#" data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only"><i class="mdi-navigation-menu"></i> </a>
 			<a href="#" class="brand-logo">Cacti</a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a href="#"> Logout</a> </li>
@@ -21,25 +23,26 @@
 	</nav>
 </div>
 
-<div class="row">
-	<!--side nav -->
+<!--upper nav end -->
+<!--side nav start -->
+<!--<div class="col s3">-->
+<ul id="sidenav" class="side-nav fixed grey">
+	<li class="logo"><a id="logo-container" href="#"> <h1>Cacti</h1></a></li>
+	<hr>
+	<li><a href="#">Status</a></li>
+	<li><a href="#">Home</a></li>
+	<li><a href="#">Profile</a></li>
+	<li><a href="#">Friends</a></li>
+	<form>
+		<div class="input-field deep-orange darken-1">
+			<input id="search" type="search" required>
+			<label for="search"><i class="material-icons white-text right-align">search</i></label>
+		</div>
+	</form>
+</ul>
 
-	<div class="col s3">
-		<ul id="sidenav-overlay" class="side-nav fixed">
-			<li><a href="#">Status</a></li>
-			<li><a href="#">Home</a></li>
-			<li><a href="#">Profile</a></li>
-			<li><a href="#">Friends</a></li>
-			<form>
-				<div class="input-field">
-					<input id="search" type="search" required>
-					<label for="search"><i class="material-icons">search</i></label>
-					<i class="material-icons">close</i>
-				</div>
-			</form>
-		</ul>
-	</div>
-	<!--side nav end-->
+<!--</div>-->
+<!--end side nav-->
 	<!--main stuff-->
 	<main>
 
@@ -54,8 +57,14 @@
 			</div>
 			<!--</div>-->
 		</div>
-	</div>
 </main>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
 
+<script>
+	$(document).ready(function () {
+		$('.button-collapse').sideNav('show');` `$('.button-collapse').sideNav('hide');
+	})
+</script>
 </body>
 </html>

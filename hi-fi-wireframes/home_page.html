@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 	<meta charset="UTF-8">
 	<title>Cacti</title>
@@ -13,7 +13,7 @@
 <div class="navbar-fixed">
 	<nav class="top-nav">
 		<div class="nav-wrapper deep-orange">
-			<a href="#" data-activates="nav-mobile" class="button-collapse full hide-on-large-only"><i class="mdi-navigation-menu"></i> </a>
+			<a href="#" data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only"><i class="mdi-navigation-menu"></i> </a>
 			<a href="#" class="brand-logo">Cacti</a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a href="#"> Logout</a> </li>
@@ -26,19 +26,21 @@
 <!--side nav start -->
 <!--<div class="col s3">-->
 <ul id="sidenav" class="side-nav fixed grey">
-	<li class="logo"><a id="logo-container" href="#"> <h1>Cacti</h1></a></li>
+		<li class="logo"><a id="logo-container" href="#"> <h1>Cacti</h1></a></li>
 	<hr>
 	<li><a href="#">Status</a></li>
 	<li><a href="#">Home</a></li>
 	<li><a href="#">Profile</a></li>
 	<li><a href="#">Friends</a></li>
+	<li class="search">
 	<form>
 		<div class="input-field deep-orange darken-1">
-			<input id="search" type="search" required>
-			<label for="search"><i class="material-icons white-text">search</i></label>
-			<i class="material-icons white-text">close</i>
+			<input id="search" type="search"><i class="material-icons white-text">search</i>
+			<!--<input id="search" type="search" required>-->
+			<!--<label for="search"><i class="material-icons white-text right-align">search</i></label>-->
 		</div>
 	</form>
+	</li>
 </ul>
 
 <!--</div>-->
@@ -63,6 +65,13 @@
 		<!--end main stuff-->
 	</div>
 </main>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
 
+<script>
+	$(document).ready(function () {
+		$('.button-collapse').sideNav('show');$('.button-collapse').sideNav('hide');
+	})
+			</script>
 </body>
 </html>
