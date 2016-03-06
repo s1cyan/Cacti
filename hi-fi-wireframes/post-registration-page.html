@@ -21,38 +21,67 @@
             <div class="row center">
                 <form class="col s6 offset-s3">
                     <div class="row">
-                        <h4>Start Time:</h4>
-                        <div class="input-field col s6">
-                            <input id="email" type="number" class="validate" length="2">
-                            <label class="active" for="email">Hour:</label>
-                        </div>
+                        <div class="row">
+                            <div class="col s4">
+                                <h4>Start Time:</h4>
+                            </div>
 
-                        <div class="input-field col s6">
-                            <input id="username" type="number" class="validate" length="2">
-                            <label class="active" for="username">Minute:</label>
+                            <div class="input-field col s4">
+                                <input id="email" type="number" class="validate" length="2">
+                                <label class="active" for="email">Hour:</label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="username" type="number" class="validate" length="2">
+                                <label class="active" for="username">Minute:</label>
+                            </div>
                         </div>
                         
-                        <br>
-                        <h4>End Time:</h4>
-                        <div class="input-field col s6">
-                            <input id="email" type="number" class="validate" length="2">
-                            <label class="active" for="email">Hour:</label>
+                        <div class="row">
+                            <div class="col s4">
+                                <h4>End Time:</h4>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="email" type="number" class="validate" length="2">
+                                <label class="active" for="email">Hour:</label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="username" type="number" class="validate" length="2">
+                                <label class="active" for="username">Minute:</label>
+                            </div>
                         </div>
 
-                        <div class="input-field col s6">
-                            <input id="username" type="number" class="validate" length="2">
-                            <label class="active" for="username">Minute:</label>
-                        </div>
-
-                        <div class="select-wrapper">
-                            <span class="caret"></span>
-                            <input class="select-dropdown" type="text" value="Choose the days" data-activates="days" readonly="true"></input>
-                            <ul id="days">
+                        <div class="row">
+                            <div class="input-field col s6 offset-s3">
+                                <select multiple>
+                                    <option value="" disabled selected>Select the days this timeframe applies to</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <a class="waves-effect waves-light btn-large" href="#">Add Another Time Frame</a>
                 </form>
             </div>
         </div>
+        
+        <!-- Jquery imports -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/materialize.min.js"></script>
+        
+        <!-- Initialization -->
+        <script>
+            $(document).ready(function () {
+                $('select').material_select();
+            });
+        </script>
     </body>
 </html>
