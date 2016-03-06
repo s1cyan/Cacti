@@ -10,22 +10,19 @@
 <body>
 
 <!--upper nav bar-->
-
-<div class="navbar-fixed">
-	<nav class="top-nav">
-		<div class="nav-wrapper deep-orange">
-			<a href="#" data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only"><i class="mdi-navigation-menu"></i> </a>
-			<a href="#" class="brand-logo">Cacti</a>
-			<ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><a href="#"> Logout</a> </li>
-			</ul>
-		</div>
-	</nav>
-</div>
-
+<header>
+	<div class="navbar-fixed">
+		<nav class="top-nav">
+			<div class="nav-wrapper deep-orange">
+				<a href="#" data-activates="sidenav" class="button-collapse top-nav full hide-on-large-only">
+					<i class="mdi-navigation-menu"></i> </a>
+				<a href="#" class="brand-logo hide-on-large-only">Cacti</a>
+			</div>
+		</nav>
+	</div>
+</header>
 <!--upper nav end -->
 <!--side nav start -->
-<!--<div class="col s3">-->
 <ul id="sidenav" class="side-nav fixed grey">
 	<li class="logo"><a id="logo-container" href="#"> <h1>Cacti</h1></a></li>
 	<hr>
@@ -33,15 +30,15 @@
 	<li><a href="#">Home</a></li>
 	<li><a href="#">Profile</a></li>
 	<li><a href="#">Friends</a></li>
-	<form>
-		<div class="input-field deep-orange darken-1">
-			<input id="search" type="search" required>
-			<label for="search"><i class="material-icons white-text right-align">search</i></label>
-		</div>
-	</form>
+	<li class="search">
+		<form>
+			<div class="input-field deep-orange darken-1">
+				<input id="search" type="search"><i class="material-icons white-text">search</i>
+			</div>
+		</form>
+	</li>
 </ul>
 
-<!--</div>-->
 <!--end side nav-->
 	<!--main stuff-->
 	<main>
@@ -63,7 +60,8 @@
 
 <script>
 	$(document).ready(function () {
-		$('.button-collapse').sideNav('show');` `$('.button-collapse').sideNav('hide');
+		$('.button-collapse').sideNav('show');
+		$('.button-collapse').sideNav('hide');
 	})
 </script>
 </body>

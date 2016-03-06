@@ -9,49 +9,43 @@
 </head>
 <body>
 <!--upper nav bar-->
-
+<header>
 <div class="navbar-fixed">
 	<nav class="top-nav">
 		<div class="nav-wrapper deep-orange">
-			<a href="#" data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only"><i class="mdi-navigation-menu"></i> </a>
-			<a href="#" class="brand-logo">Cacti</a>
-			<ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><a href="#"> Logout</a> </li>
-			</ul>
+			<a href="#" data-activates="sidenav" class="button-collapse top-nav full hide-on-large-only">
+				<i class="mdi-navigation-menu"></i> </a>
+			<a href="#" class="brand-logo hide-on-large-only">Cacti</a>
 		</div>
 	</nav>
 </div>
-
+</header>
 <!--upper nav end -->
 <!--side nav start -->
-<!--<div class="col s3">-->
 <ul id="sidenav" class="side-nav fixed grey">
-		<li class="logo"><a id="logo-container" href="#"> <h1>Cacti</h1></a></li>
+	<li class="logo"><a id="logo-container" href="#"> <h1>Cacti</h1></a></li>
 	<hr>
 	<li><a href="#">Status</a></li>
 	<li><a href="#">Home</a></li>
 	<li><a href="#">Profile</a></li>
 	<li><a href="#">Friends</a></li>
 	<li class="search">
-	<form>
-		<div class="input-field deep-orange darken-1">
-			<input id="search" type="search"><i class="material-icons white-text">search</i>
-			<!--<input id="search" type="search" required>-->
-			<!--<label for="search"><i class="material-icons white-text right-align">search</i></label>-->
-		</div>
-	</form>
+		<form>
+			<div class="input-field deep-orange darken-1">
+				<input id="search" type="search"><i class="material-icons white-text">search</i>
+			</div>
+		</form>
 	</li>
 </ul>
 
-<!--</div>-->
 <!--end side nav-->
+
 <!--main stuff-->
 <main>
 	<div class="row">
 
 		<div class="row center-align">
 			<div class="col s12">
-				<!--<div class="col s9 offset-s2">-->
 				<div class="container center-align">
 
 					<p>	<img src="http://rlv.zcache.com/happy_cartoon_cactus_guy_blue_background_rectangular_photo_magnet-r91e774aeb7404c94bd135a55318721e5_ambom_8byvr_324.jpg"/>
@@ -65,13 +59,18 @@
 		<!--end main stuff-->
 	</div>
 </main>
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 
 <script>
 	$(document).ready(function () {
-		$('.button-collapse').sideNav('show');$('.button-collapse').sideNav('hide');
+		$('.button-collapse').sideNav();
+		$(".button-collapse").sideNav('show');
+		$(".button-collapse").sideNav('hide');
+
+
 	})
-			</script>
+</script>
 </body>
 </html>
