@@ -8,6 +8,7 @@
 /[Vv]env/
 /[Ee]nv/
 /boop/
+/cyanenv/
 
 # Jetbrains Related Folders
 /.idea/
