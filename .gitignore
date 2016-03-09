@@ -14,3 +14,6 @@
 
 # Orig data
 *.orig
+
+# OSX Junk Data
+.DS_Store
