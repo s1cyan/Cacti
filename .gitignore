@@ -17,3 +17,6 @@
 
 # OSX Junk Data
 .DS_Store
+
+# Sqlite3
+db.sqlite3
