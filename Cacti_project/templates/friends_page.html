@@ -1,0 +1,60 @@
+{% extends 'default.html' %}
+
+{% block body %}
+
+{% include 'navbar.html' %}
+<main>
+	<div class="container">
+		<div class="row">
+
+			<div class="col s12">
+				<h3>Requests</h3>
+
+				<ul class="collection">
+					<li class="collection-item black-text">
+						<div>toobers
+							<div class="secondary-content ">
+									<a class="waves-effect waves-light deep-orange btn">Add</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<h3>Friends</h3>
+				<ul class="collection">
+					<a class="collection-item modal-trigger waves-effect waves-light black-text" href="#modal1">
+						<div>ᕕ(ᐛ)ᕗ</div>
+					</a>
+					<div id="modal1" class="modal modal-fixed-footer">
+						<div class="modal-content">
+							<h4>ᕕ(ᐛ)ᕗ</h4>
+							<p>Calendar</p>
+							<div class="waves-light grey btn"> Delete friend</div>
+						</div>
+					</div>
+					<a class="collection-item modal-trigger waves-effect waves-light black-text" href="#modal2">ᕕ(ᐛ)ᕗ ᕕ(ᐛ)ᕗ   </a>
+					<div id="modal2" class="modal modal-fixed-footer">
+						<div class="modal-content">
+							<h4>ᕕ(ᐛ)ᕗ ᕕ(ᐛ)ᕗ</h4>
+							<p>Calendar</p>
+							<div class="waves-light grey btn"> Delete friend</div>
+						</div>
+					</div>
+					<a class="collection-item modal-trigger waves-effect waves-light black-text" href="#modal3">ᕕ(ᐛ)ᕗ ᕕ(ᐛ)ᕗ ᕕ(ᐛ)ᕗ  </a>
+					<div id="modal3" class="modal modal-fixed-footer">
+						<div class="modal-content">
+							<h4>ᕕ(ᐛ)ᕗ ᕕ(ᐛ)ᕗ ᕕ(ᐛ)ᕗ</h4>
+							<p>Calendar</p>
+							<div class="waves-light grey btn"> Delete friend</div>
+						</div>
+					</div>
+				</ul>
+
+			</div>
+		</div>
+	</div>
+</main>
+
+{% include "navbar_jquery.html" %}
+
+
+{% endblock %}
