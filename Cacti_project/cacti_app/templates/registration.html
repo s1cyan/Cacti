@@ -3,11 +3,7 @@
 {% block body %}
 <div class="section no-pad-bot" id="index-banner">
 	<div class="container">
-		<br>
-		<h1 class="header center orange-text">Cacti</h1>
-		<div class="row center">
-			<h5 class="header col s12 light">Let's get you signed up with this service.</h5>
-		</div>
+		{% include "cacti_header.html" %}
 		<div class="row center">
 			<form class="col s6 offset-s3">
 				<div class="row">
@@ -36,4 +32,5 @@
 		</div>
 	</div>
 </div>
+{% include "scripts.html" %}
 {% endblock %}
