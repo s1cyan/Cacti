@@ -12,16 +12,25 @@ def greeting_page(request):
     context_dict = {
             'page_title': 'Cacti',
             'slogan': 'We need a slogan.',
-            'login_url': 'some_url',
-            'register_url': 'another_url'
+            'show_image': False
             }
     return render(request, 'greetings.html', context_dict)
 
 
 def login_page(request):
+    """
+        Renders the login page for users to sign in.
+
+        :param request: POST
+        :return: login.html
+    """
     # TODO: Check for GET request and check the database.
     # TODO: Return the render template and route this function to a url.
-    pass
+    context_dict = {
+        'page_title': 'Login',
+        'slogan': 'Let\'s get you signed up with this service.',
+    }
+    return render(request, 'login-page.html', context_dict)
 
 
 def register_page(request):
