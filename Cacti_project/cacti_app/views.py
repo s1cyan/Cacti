@@ -30,6 +30,7 @@ def login_page(request):
     context_dict = {
         'page_title': 'Login',
         'slogan': 'Let\'s get you signed up with this service.',
+        'post_registration_url': '/cacti_app/post_registration_url'
     }
     return render(request, 'login-page.html', context_dict)
 
