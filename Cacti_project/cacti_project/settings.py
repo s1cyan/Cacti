@@ -22,6 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ozo)a#+u!mp47r@)2$az2o+#vh1%)+-0)cibkak0znoihm_aoz'
 
+# Adds a universal template path for the Django Project
+TEMPLATE_PATH= os.path.join(BASE_DIR, 'templates')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -56,7 +59,9 @@ ROOT_URLCONF = 'cacti_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+                TEMPLATE_PATH,               
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
