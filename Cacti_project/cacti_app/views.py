@@ -12,8 +12,8 @@ def greeting_page(request):
             'page_title': 'Cacti',
             'slogan': 'We need a slogan.',
             'show_image': True,
-            'register_url': 'cacti_app/register',
-            'login_url': 'cacti_app/login'
+            'register_url': '/cacti_app/register',
+            'login_url': '/cacti_app/login'
             }
     return render(request, 'greetings.html', context_dict)
 
