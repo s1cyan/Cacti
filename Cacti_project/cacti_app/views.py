@@ -49,3 +49,5 @@ def register_page(request):
         'show_image': False
     }
     return render(request, 'registration.html', context_dict)
+    context_dict = {'page_title': 'Cacti: Search for friends'}
+    return render(request, 'search-page.html',context_dict)
