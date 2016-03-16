@@ -9,18 +9,21 @@ from django.db import models
 
 class User(models.Model):
     username = models.CharField(max_length=64)
-    email = models.CharField(max_length=64)
+    email = models.EmailField()
     phone_number = models.IntegerField(max_length=11)
     password = models.CharField(max_length=64)
     status = models.BooleanField()
-#   TODO Picture thing
+    friends = models.ManyToManyField("self")
+    picture = models.ImageField()
 
 
-class Classes(models.Model):
+class ScheduleBlock(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
-    description = models.CharField(max_length = 64)
+    description = models.CharField(max_length=64)
+    user = models.ForeignKey(User)
 
 
 class Day(models.Model):
-    date = models.DateField()
+    date = models.CharField(max_length=10)
+    block = models.ForeignKey(ScheduleBlock)
