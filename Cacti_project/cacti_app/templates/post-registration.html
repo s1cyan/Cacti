@@ -11,7 +11,7 @@
 		</div>
 	</div>
 	<div class="row center">
-        <form class="col s6 offset-s3" action="{{ schedule_url }}" method="POST">
+        <form class="col s6 offset-s3" action="{{ schedule_url }}" method="post">
 			<div class="row">
 				<div class="row">
 					<div class="col s4">
@@ -48,8 +48,8 @@
 					</div>
 				</div>
 			</div>
-			<a class="waves-effect waves-light btn-large" href="#">Add Another Time Frame</a>
-            <a class="waves-effect waves-light btn-large" href="#">Finished</a>
+            <button class="waves-effect waves-light btn-large" href="{{ schedule_url }}" type="submit" name="action">Add Another Time Frame</a>
+            <button class="waves-effect waves-light btn-large" href="#">Finished</a>
 		</form>
 	</div>
 </div>

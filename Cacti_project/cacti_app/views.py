@@ -56,7 +56,6 @@ def user_email(request, email_id):
     email = 0
 
 
-
 def search_page(request):
     context_dict = {'page_title': 'Cacti: Search for friends'}
     return render(request, 'search-page.html', context_dict)
@@ -66,8 +65,14 @@ def register_schedule_information(request):
     """
     Submits a post request and registers the User's schedule information
     into the database.
-    
     :param request: POST
     :return: post-registration.html
     """
-    return render(request, 'post-registration.html', {})
+    context_dict = { 
+            'page_title': 'Update your schedule',
+            'schedule_url': '/cacti_app/set-your-schedule'
+            }
+
+    print request.GET
+    print request.POST
+    return render(request, 'post-registration.html', context_dict)

@@ -29,4 +29,4 @@ class DayForm(forms.ModelForm):
     class Meta:
         model = Day
         field = ['date']
-    pass
+
