@@ -50,4 +50,15 @@ def register_page(request):
     }
     return render(request, 'registration.html', context_dict)
     context_dict = {'page_title': 'Cacti: Search for friends'}
-    return render(request, 'search-page.html',context_dict)
+    return render(request, 'search-page.html', context_dict)
+
+
+def register_schedule_information(request):
+    """
+    Submits a post request and registers the User's schedule information
+    into the database.
+    
+    :param request: POST
+    :return: post-registration.html
+    """
+    return render(request, 'post-registration.html', {})
