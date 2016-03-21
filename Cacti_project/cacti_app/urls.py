@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^login', views.login, name='login'),
     url(r'^set-your-schedule', views.post_registration, name='post-Registration'),
     url(r'^profile', views.profile, name='profile'),
-    url(r'^registration', views.registration, name='registration'),
+    # url(r'^registration', views.registration, name='registration'),
     url(r'^search', views.search, name='search'),
 
 ]

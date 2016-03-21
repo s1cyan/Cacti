@@ -46,8 +46,12 @@ def register_page(request):
     # TODO: Check if the Username and Email address exists.
     context_dict = {
         'page_title': 'Registration',
-        'show_image': False
+        'show_image': False,
+        'form': form_class,
     }
     return render(request, 'registration.html', context_dict)
+
+
+def search_page(request):
     context_dict = {'page_title': 'Cacti: Search for friends'}
     return render(request, 'search-page.html',context_dict)
