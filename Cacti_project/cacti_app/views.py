@@ -47,9 +47,14 @@ def register_page(request):
     context_dict = {
         'page_title': 'Registration',
         'show_image': False,
-        'form': form_class,
+        # 'form': form_class,
     }
     return render(request, 'registration.html', context_dict)
+
+
+def user_email(request, email_id):
+    email = 0
+
 
 
 def search_page(request):
