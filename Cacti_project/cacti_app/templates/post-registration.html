@@ -48,8 +48,9 @@
 					</div>
 				</div>
 			</div>
-            <button class="waves-effect waves-light btn-large" href="{{ schedule_url }}" type="submit" name="action">Add Another Time Frame</a>
-            <button class="waves-effect waves-light btn-large" href="#">Finished</a>
+            <button class="waves-effect waves-light btn-large" href="{{ schedule_url }}" type="submit" name="action">Add Another Block</a>
+            <button class="waves-effect waves-light btn-large" href="#" type="submit" name="action">Finished</a>
+            {% csrf_token %}
 		</form>
 	</div>
 </div>
