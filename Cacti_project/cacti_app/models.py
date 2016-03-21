@@ -1,11 +1,8 @@
 from __future__ import unicode_literals
-
 from django.db import models
 
-# from django.contrib.auth import models
-
-
 # Create your models here.
+
 
 class User(models.Model):
     username = models.CharField(max_length=64)
@@ -20,7 +17,8 @@ class User(models.Model):
 class ScheduleBlock(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
-    description = models.CharField(max_length=64)
+    schedule_name = models.CharField(max_length=10)
+    schedule_description = models.CharField(max_length=64)
     user = models.ForeignKey(User)
 
 
