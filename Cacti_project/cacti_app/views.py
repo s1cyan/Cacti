@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from forms import RegistrationForm
+from models import User
 
 
 def greeting_page(request):
@@ -31,6 +33,7 @@ def login_page(request):
         'page_title': 'Login',
         'slogan': 'Let\'s get you signed up with this service.',
         'post_registration_url': '/cacti_app/post_registration_url'
+
     }
     return render(request, 'login-page.html', context_dict)
 
@@ -44,17 +47,37 @@ def register_page(request):
     """
     # TODO: Check for POST request and add the user to the database.
     # TODO: Check if the Username and Email address exists.
+
+    register_form = RegistrationForm(request.POST)
+    print request.POST
     context_dict = {
         'page_title': 'Registration',
         'show_image': False,
-        # 'form': form_class,
+        'form': register_form,
+        'processing_url': '/cacti_app/registration_processing'
     }
+
+
     return render(request, 'registration.html', context_dict)
 
 
-def user_email(request, email_id):
-    email = 0
+def registration_processing(request):
+    #make case for if two passwords arent the same
+    #user exists
+    #user doesnt exist
+    u, created = User.object.get_or_create(RegistrationForm.email,RegistrationForm.username,RegistrationForm.password)
+    if created is True:
+        return render(request, 'ty-page.html')
 
+    else: return render(request, 'registration.html')
+
+
+
+# def thank_you(request):
+#     context_dict = {
+#         'page_title': 'Thanks!'
+#     }
+#     return render(request,'ty-page.html', context_dict)
 
 
 def search_page(request):
