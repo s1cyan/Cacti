@@ -4,7 +4,7 @@ from models import User, ScheduleBlock, Day
 
 class RegistrationForm(forms.ModelForm):
     email = forms() # wat
-    
+
     class Meta:
         model = User
         field = ('email',)
@@ -23,10 +23,9 @@ class ScheduleBlockForm(forms.ModelForm):
 
 class DayForm(forms.ModelForm):
     """
-    This form is associated with the Day Model found in 
+    This form is associated with the Day Model found in
     models.py.
     """
     class Meta:
         model = Day
         field = ['date']
-

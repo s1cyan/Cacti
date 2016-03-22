@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from models import ScheduleBlock
 
 
 def greeting_page(request):
     """
-    Renders the initial page users will see.
+    Renders the initial page users will see, a register or login page will be
+    accessible.
 
     :param request: None
     :return: greetings.html
@@ -27,6 +29,7 @@ def login_page(request):
     """
     # TODO: Check for GET request and check the database.
     # TODO: Return the render template and route this function to a url.
+    # TODO: Authenticate the user and log them in using Django's User model.
     context_dict = {
         'page_title': 'Login',
         'slogan': 'Let\'s get you signed up with this service.',
@@ -53,6 +56,7 @@ def register_page(request):
 
 
 def user_email(request, email_id):
+    # TODO: What is this for?
     email = 0
 
 
@@ -63,16 +67,37 @@ def search_page(request):
 
 def register_schedule_information(request):
     """
-    Submits a post request and registers the User's schedule information
-    into the database.
-    :param request: POST
+    Renders the form allowing users to register their schedule information.
+    This function is mapped with process_sched_info(request).
+    :param request: None
     :return: post-registration.html
     """
-    context_dict = { 
+    # TODO: Check if the user is logged in.
+    context_dict = {
             'page_title': 'Update your schedule',
-            'schedule_url': '/cacti_app/set-your-schedule'
+            'schedule_url': '/cacti_app/set-your-schedule',
+            'schedule_process': '/cacti_app/process-schedule'
             }
 
-    print request.GET
-    print request.POST
     return render(request, 'post-registration.html', context_dict)
+
+
+def process_sched_info(request):
+    """
+    Processes and attempts to validate the form. If the form is correct,
+        returns the correct page, otherwise a warning is spit out to the user.
+    """
+    # TODO: Convert the string to a datetime timefield.
+    # TODO: Check if the start time is less than the end time.
+    # TODO: Add a schedule description.
+    # TODO: Do logic processing, if the form is correct return the user to the
+    # right page, if not, spit out error
+    post_dict = request.POST
+    try:
+        schedule_obj = ScheduleBlock.objects.get(
+            schedule_name=post_dict['sched_name'],
+            start_time=post_dict['start_time'],
+            end_time=post_dict['end_time'],
+            )
+    except:
+        print post_dict

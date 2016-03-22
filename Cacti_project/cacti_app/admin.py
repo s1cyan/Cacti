@@ -5,4 +5,3 @@ from models import Day, User, ScheduleBlock
 admin.site.register(User)
 admin.site.register(Day)
 admin.site.register(ScheduleBlock)
-
