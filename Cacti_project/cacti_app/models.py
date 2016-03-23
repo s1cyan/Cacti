@@ -13,5 +13,6 @@ class ScheduleBlock(models.Model):
 
 
 class Day(models.Model):
+    # TODO: Change the CharField into an Integer Field
     date = models.CharField(max_length=10)
     schedule_block = models.ForeignKey(ScheduleBlock)
