@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from models import ScheduleBlock
+from django.contrib.auth.models import User
+from models import ScheduleBlock, Day
+from datetime import datetime
 
 
 def greeting_page(request):
@@ -85,19 +87,32 @@ def register_schedule_information(request):
 def process_sched_info(request):
     """
     Processes and attempts to validate the form. If the form is correct,
-        returns the correct page, otherwise a warning is spit out to the user.
+    returns the correct page, otherwise a warning is spit out to the user.
     """
     # TODO: Convert the string to a datetime timefield.
     # TODO: Check if the start time is less than the end time.
-    # TODO: Add a schedule description.
     # TODO: Do logic processing, if the form is correct return the user to the
     # right page, if not, spit out error
     post_dict = request.POST
-    try:
-        schedule_obj = ScheduleBlock.objects.get(
-            schedule_name=post_dict['sched_name'],
-            start_time=post_dict['start_time'],
-            end_time=post_dict['end_time'],
-            )
-    except:
-        print post_dict
+    # Convert the string into actual datetime objects.
+    start_time = datetime.strptime(post_dict['start_time'], '%H:%M').time()
+    end_time = datetime.strptime(post_dict['end_time'], '%H:%M').time()
+    
+    if start_time < end_time:
+        try:
+            # If there is already an existing schedule block taking up
+            # that timeframe, return the User back to the original page.
+            schedule_obj = ScheduleBlock.objects.get(
+                schedule_name=post_dict['sched_name'],
+                schedule_description=post_dict['sched_desc'],
+                start_time=start_time,
+                end_time=end_time
+                )
+        except:
+            schedule_obj = ScheduleBlock(schedule_name=post_dict['sched_name'],
+                                         schedule_desc=post_dict['sched_desc'],
+                                         start_time=start_time,
+                                         end_time=end_time
+                                         )
+    else:
+        return register_schedule_information(request)

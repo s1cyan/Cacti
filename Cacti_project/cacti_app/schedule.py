@@ -1,11 +1,6 @@
-from datetime import timedelta
+from datetime import datetime
+from datetime import date
 
-
-def add_new_schedule(post_request):
-    """
-    Checks the request for a post request and adds
-    the User's information to the database.
-    :param request: dict, POST request
-    :return: None
-    """
+# TODO: Create a map that associates every day with an integer.
+def is_user_free():
     pass
