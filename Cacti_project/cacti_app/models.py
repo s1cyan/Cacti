@@ -1,18 +1,18 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 # Create your models here.
 class ScheduleBlock(models.Model):
-    start_time = models.TimeField()
-    end_time = models.TimeField()
-    schedule_name = models.CharField(max_length=10)
-    schedule_desc = models.CharField(max_length=64)
+    schedule_name = models.CharField(max_length=10, primary_key=True)
+    schedule_desc = models.CharField(max_length=128)
+    start_time = models.TimeField(timezone.now())
+    end_time = models.TimeField(timezone.now())
     user = models.ForeignKey(User)
 
 
 class Day(models.Model):
-    # TODO: Change the CharField into an Integer Field
-    date = models.CharField(max_length=10)
+    date = models.IntegerField()
     schedule_block = models.ForeignKey(ScheduleBlock)
