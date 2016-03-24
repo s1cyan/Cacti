@@ -19,6 +19,6 @@ def create_day_model(days_list, schedule_model):
         'Sunday': 7
     }
     for day in days_list:
-        print type(day) + day
+        pass
         # day_obj = Day.objects.create(date=str(day_dict[day]),
         #                              schedule_block=schedule_model)

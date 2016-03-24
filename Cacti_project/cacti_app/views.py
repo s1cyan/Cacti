@@ -99,8 +99,6 @@ def process_sched_info(request):
     start_time = datetime.strptime(post_dict['start_time'], '%H:%M').time()
     end_time = datetime.strptime(post_dict['end_time'], '%H:%M').time()
 
-    print post_dict
-
     if start_time < end_time:
         try:
             # If there is already an existing schedule block taking up
@@ -119,6 +117,6 @@ def process_sched_info(request):
                                          end_time=end_time
                                          )
             # TODO: Call the create_day_model in schedule.py
-            create_day_model(post_dict['days'], schedule_obj)
+            create_day_model(post_dict.getlist('days'), schedule_obj)
     else:
         return register_schedule_information(request)

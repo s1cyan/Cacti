@@ -50,7 +50,7 @@
 
 				<div class="row">
 					<div class="input-field col s6 offset-s3">
-						<select multiple name="days">
+						<select multiple id="days" name="days">
 							<option value="" disabled selected>Select the days this timeframe applies to</option>
 							<option value="Monday">Monday</option>
 							<option value="Tuesday">Tuesday</option>
@@ -75,6 +75,7 @@
 <script>
 	$(document).ready(function () {
 		$('select').material_select();
+		$('#days').val();
 	});
 </script>
 
