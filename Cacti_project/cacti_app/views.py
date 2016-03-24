@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from forms import RegistrationForm
-from models import User
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+
 
 
 def greeting_page(request):
@@ -54,30 +56,49 @@ def register_page(request):
         'page_title': 'Registration',
         'show_image': False,
         'form': register_form,
-        'processing_url': '/cacti_app/registration_processing'
+        'processing_url_INVIEWS': '/cacti_app/registration_processing'
     }
-
 
     return render(request, 'registration.html', context_dict)
 
 
 def registration_processing(request):
-    #make case for if two passwords arent the same
-    #user exists
-    #user doesnt exist
-    u, created = User.object.get_or_create(RegistrationForm.email,RegistrationForm.username,RegistrationForm.password)
-    if created is True:
+    if request.POST['password'] != request.POST['confirm']:
+        print ('passwords not the same')
+        return render(request, 'registration.html')
+
+    # User.objects.filter(email=request.POST['password'])
+
+    try:
+        User.objects.get(email=request.POST['email'])
+        print ('email exists')
+        return render(request, 'registration.html')
+
+    except ObjectDoesNotExist:
+        User.objects.create(email=request.POST['email'],first_name=request.POST['username'], password=request.POST['password'])
+        print ('registration worked')
         return render(request, 'ty-page.html')
 
-    else: return render(request, 'registration.html')
+
+    # u = User.email(request.POST['email'])
+    # u, created = User.object.get_or_create(email=request.POST['email'],first_name=request.POST['username'], password=request.POST['password'])
+    #
+    # if created is True:
+    #     print ('registration worked')
+    #     return render(request, 'ty-page.html')
+    #
+    # else:
+    #     print ('email exists')
+    #     return render(request, 'registration.html')
 
 
 
-# def thank_you(request):
-#     context_dict = {
-#         'page_title': 'Thanks!'
-#     }
-#     return render(request,'ty-page.html', context_dict)
+
+def thank_you(request):
+    context_dict = {
+        'page_title': 'Thanks!'
+    }
+    return render(request,'ty-page.html', context_dict)
 
 
 def search_page(request):

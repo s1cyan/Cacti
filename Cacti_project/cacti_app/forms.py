@@ -11,7 +11,7 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email','username','password','password_confirmation',)
+        fields = ('email','username','password','password_confirmation')
 
 
 
