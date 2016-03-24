@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from forms import RegistrationForm
+from forms import RegistrationForm,LoginForm
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist
-
 
 
 def greeting_page(request):
@@ -31,13 +31,24 @@ def login_page(request):
     """
     # TODO: Check for GET request and check the database.
     # TODO: Return the render template and route this function to a url.
+    login_form = LoginForm(request.POST)
     context_dict = {
         'page_title': 'Login',
         'slogan': 'Let\'s get you signed up with this service.',
-        'post_registration_url': '/cacti_app/post_registration_url'
-
+        'form': login_form,
+        'password_check_INVIEWS': '/cacti_app/password_check'
     }
     return render(request, 'login-page.html', context_dict)
+
+
+def password_check(request):
+    p = User.check_password(raw_password=request.POST['password'])
+    # user = authenticate(username=request.POST['username'],password=request.POST['password'])
+    if p is True:  # password works for user
+        return render(request,'home-page.html')
+    else:
+        print ('id/password incorrect')
+        return render(request,'login-page.html')
 
 
 def register_page(request):
@@ -58,7 +69,6 @@ def register_page(request):
         'form': register_form,
         'processing_url_INVIEWS': '/cacti_app/registration_processing'
     }
-
     return render(request, 'registration.html', context_dict)
 
 
@@ -67,38 +77,31 @@ def registration_processing(request):
         print ('passwords not the same')
         return render(request, 'registration.html')
 
-    # User.objects.filter(email=request.POST['password'])
-
     try:
         User.objects.get(email=request.POST['email'])
-        print ('email exists')
+        User.objects.get(username=request.POST['username'])
+        print ('email/username already exists')
         return render(request, 'registration.html')
 
     except ObjectDoesNotExist:
-        User.objects.create(email=request.POST['email'],first_name=request.POST['username'], password=request.POST['password'])
-        print ('registration worked')
+        User.objects.create(email=request.POST['email'],username=request.POST['username'], password=request.POST['password'])
+        # print ('registration worked')
         return render(request, 'ty-page.html')
-
-
-    # u = User.email(request.POST['email'])
-    # u, created = User.object.get_or_create(email=request.POST['email'],first_name=request.POST['username'], password=request.POST['password'])
-    #
-    # if created is True:
-    #     print ('registration worked')
-    #     return render(request, 'ty-page.html')
-    #
-    # else:
-    #     print ('email exists')
-    #     return render(request, 'registration.html')
-
-
 
 
 def thank_you(request):
     context_dict = {
-        'page_title': 'Thanks!'
+        'page_title': 'Thanks!',
+        'continue_url':'/cacti_app/home-page'
     }
     return render(request,'ty-page.html', context_dict)
+
+
+def home_page(request):
+    context_dict = {
+        'page_title': 'Home',
+    }
+    return render(request,'home-page.html',context_dict)
 
 
 def search_page(request):
