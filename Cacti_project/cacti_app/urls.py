@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^register', views.register_page, name='register'),
     url(r'^registration_processing', views.registration_processing, name='processing'),
     url(r'^thankyou', views.thank_you, name='thankyou'),
+    url(r'home', views.home, name='home')
 
 ]

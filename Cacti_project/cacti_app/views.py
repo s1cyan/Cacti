@@ -42,6 +42,7 @@ def login_page(request):
 
 
 def password_check(request):
+
     p = User.check_password(raw_password=request.POST['password'])
     # user = authenticate(username=request.POST['username'],password=request.POST['password'])
     if p is True:  # password works for user
@@ -58,9 +59,6 @@ def register_page(request):
     :param request: POST
     :return: registration.html
     """
-    # TODO: Check for POST request and add the user to the database.
-    # TODO: Check if the Username and Email address exists.
-
     register_form = RegistrationForm(request.POST)
     print request.POST
     context_dict = {
@@ -73,31 +71,46 @@ def register_page(request):
 
 
 def registration_processing(request):
-    if request.POST['password'] != request.POST['confirm']:
+    """
+    First checks if password and confirmation password are the same
+    checks if email/username for registration is already in database
+    :param request:
+    :return: if password confirmation is incorrect and if username/email is already used : registration.html
+            else: ty-page.html
+    """
+    username = request.POST['username']
+    email = request.POST['email']
+    password = request.POST['password']
+    confirmation = request.POST['confirm']
+
+    if password != confirmation:
         print ('passwords not the same')
         return render(request, 'registration.html')
 
     try:
-        User.objects.get(email=request.POST['email'])
-        User.objects.get(username=request.POST['username'])
+        User.objects.get(email=email)
+        User.objects.get(username=username)
         print ('email/username already exists')
         return render(request, 'registration.html')
 
     except ObjectDoesNotExist:
-        User.objects.create(email=request.POST['email'],username=request.POST['username'], password=request.POST['password'])
-        # print ('registration worked')
+        User.objects.create_user(username=username,email=email,password=password)
+        # u = User.objects.get_by_natural_key(username)
+        # u.set_password(password)
+        # u = User.objects.get(username=request.POST['username'])
+        # u.set_password(request.POST['password'])
         return render(request, 'ty-page.html')
 
 
 def thank_you(request):
     context_dict = {
         'page_title': 'Thanks!',
-        'continue_url':'/cacti_app/home-page'
+        'continue_url': '/cacti_app/home'
     }
     return render(request,'ty-page.html', context_dict)
 
 
-def home_page(request):
+def home(request):
     context_dict = {
         'page_title': 'Home',
     }

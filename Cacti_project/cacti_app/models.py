@@ -16,12 +16,12 @@ from django.contrib.auth.models import User
 #     friends = models.ManyToManyField("self")
 #     picture = models.ImageField()
 
-class UserHelper(models.Model):
-    friends = models.ManyToManyField("self")
-    picture = models.ImageField()
-    status = models.BooleanField()
-    phone_number = models.IntegerField(max_length=11)
-    user = models.OneToOneField(User)
+# class UserHelper(models.Model):
+#     friends = models.ManyToManyField("self")
+#     picture = models.ImageField()
+#     status = models.BooleanField()
+#     phone_number = models.IntegerField(max_length=11)
+#     user = models.OneToOneField(User)
 
 
 class ScheduleBlock(models.Model):
