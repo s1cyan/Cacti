@@ -10,7 +10,12 @@ class ScheduleBlock(models.Model):
     schedule_desc = models.CharField(max_length=128)
     start_time = models.TimeField(timezone.now())
     end_time = models.TimeField(timezone.now())
-    user = models.ForeignKey(User)
+    # TODO: Add the User Model to the ForeignKey
+    # user = models.ForeignKey(User)
+    
+    # Allows ease of debugging by returning an identifier.
+    def __unicode__(self):
+        return self.schedule_name
 
 
 class Day(models.Model):

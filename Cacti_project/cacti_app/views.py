@@ -111,11 +111,11 @@ def process_sched_info(request):
                 )
             # TODO: Return the original page with exception errors.
         except:
-            schedule_obj = ScheduleBlock(schedule_name=post_dict['sched_name'],
-                                         schedule_desc=post_dict['sched_desc'],
-                                         start_time=start_time,
-                                         end_time=end_time
-                                         )
+            schedule_obj = ScheduleBlock.objects.create(schedule_name=post_dict['sched_name'],
+                                                        schedule_desc=post_dict['sched_desc'],
+                                                        start_time=start_time,
+                                                        end_time=end_time
+                                                        )
             # TODO: Call the create_day_model in schedule.py
             create_day_model(post_dict.getlist('days'), schedule_obj)
     else:
