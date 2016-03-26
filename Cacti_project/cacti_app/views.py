@@ -42,10 +42,12 @@ def login_page(request):
 
 
 def password_check(request):
-
-    p = User.check_password(raw_password=request.POST['password'])
+    password = request.POST['password']
+    username = request.POST['username']
+    p = authenticate(username=username,password=password)
+    # p = User.check_password(raw_password=request.POST['password'])
     # user = authenticate(username=request.POST['username'],password=request.POST['password'])
-    if p is True:  # password works for user
+    if p is not None:  # password works for user
         return render(request,'home-page.html')
     else:
         print ('id/password incorrect')
@@ -111,6 +113,7 @@ def thank_you(request):
 
 
 def home(request):
+
     context_dict = {
         'page_title': 'Home',
     }
