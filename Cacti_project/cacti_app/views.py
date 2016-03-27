@@ -29,8 +29,6 @@ def login_page(request):
     :param request: POST
     :return: login.html
     """
-    # TODO: Check for GET request and check the database.
-    # TODO: Return the render template and route this function to a url.
     login_form = LoginForm(request.POST)
     context_dict = {
         'page_title': 'Login',
@@ -45,8 +43,6 @@ def password_check(request):
     password = request.POST['password']
     username = request.POST['username']
     p = authenticate(username=username,password=password)
-    # p = User.check_password(raw_password=request.POST['password'])
-    # user = authenticate(username=request.POST['username'],password=request.POST['password'])
     if p is not None:  # password works for user
         return render(request,'home-page.html')
     else:
@@ -62,7 +58,7 @@ def register_page(request):
     :return: registration.html
     """
     register_form = RegistrationForm(request.POST)
-    print request.POST
+    # print request.POST
     context_dict = {
         'page_title': 'Registration',
         'show_image': False,
@@ -97,17 +93,13 @@ def registration_processing(request):
 
     except ObjectDoesNotExist:
         User.objects.create_user(username=username,email=email,password=password)
-        # u = User.objects.get_by_natural_key(username)
-        # u.set_password(password)
-        # u = User.objects.get(username=request.POST['username'])
-        # u.set_password(request.POST['password'])
         return render(request, 'ty-page.html')
 
 
 def thank_you(request):
     context_dict = {
         'page_title': 'Thanks!',
-        'continue_url': '/cacti_app/home'
+        # 'continue_url_INVIEWS': '/cacti_app/home'
     }
     return render(request,'ty-page.html', context_dict)
 
