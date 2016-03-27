@@ -13,24 +13,45 @@
 	<div class="row center">
         <form class="col s6 offset-s3" action="{{ schedule_process }}" method="post">
 			{% csrf_token %}
+            <div class="row">
+                <div class="fieldWrapper">
+                    <div class="col s6 offset-s3">
+						{{ form.schedule_name.errors }}
+						<label for="{{ form.schedule_name.id_for_label }}">Schedule Title:</label>
+						{{ form.schedule_name }}
+                    </div>
+                </div>
+            </div>
+
 			<div class="row">
-				<div class="input-field col s6 offset-s3">
-					<input placeholder="Name of schedule" id="sched-title" name="sched_name" type="text" required>
-					<label for="sched-title">Schedule Title</label>
+				<div class="fieldWrapper">
+					<div class="col s6 offset-s3">
+						<label for="start_time">Start Time:</label>
+						<input type="time" name="start_time" id="start_time" required>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="fieldWrapper">
+					<div class="col s6 offset-s3">
+						<label for="end_time">End Time:</label>
+						<input type="time" name="end_time" id="end_time" required>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<label for="sched_desc">Schedule Description</label>
+					<textarea id="sched_desc" class="materialize-textarea" name="sched_desc" length="120"></textarea>
 				</div>
 			</div>
 
             <div class="row">
-                <div class="fieldWrapper">
-                    <div class="col s6 offset-s3">
-                        
-                    </div>
-                </div>             
-            </div>
-            
-            <div class="row">
                 <button class="waves-effect waves-light btn-large" href="{{ schedule_url }}" type="submit" name="action">Add Another Block</a>
             </div>
+
             <div class="row">
                 <button class="waves-effect waves-light btn-large" href="#" type="submit" name="action">Finished</a>
             </div>

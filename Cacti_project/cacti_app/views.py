@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from models import ScheduleBlock, Day
 from datetime import datetime
 from schedule import create_day_model
+from forms import DayForm, ScheduleBlockForm
 
 
 def greeting_page(request):
@@ -76,10 +77,12 @@ def register_schedule_information(request):
     :return: post-registration.html
     """
     # TODO: Check if the user is logged in.
+    form = ScheduleBlockForm(request.POST)
     context_dict = {
             'page_title': 'Update your schedule',
             'schedule_url': '/cacti_app/set-your-schedule',
-            'schedule_process': '/cacti_app/process-schedule'
+            'schedule_process': '/cacti_app/process-schedule',
+            'form': form
             }
 
     return render(request, 'post-registration.html', context_dict)
@@ -103,7 +106,7 @@ def process_sched_info(request):
         try:
             # If there is already an existing schedule block taking up
             # that timeframe, return the User back to the original page.
-            schedule_obj = ScheduleBlock.objects.get(
+            sched_obj = ScheduleBlock.objects.get(
                 schedule_name=post_dict['sched_name'],
                 schedule_description=post_dict['sched_desc'],
                 start_time=start_time,
@@ -111,12 +114,12 @@ def process_sched_info(request):
                 )
             # TODO: Return the original page with exception errors.
         except:
-            schedule_obj = ScheduleBlock.objects.create(schedule_name=post_dict['sched_name'],
-                                                        schedule_desc=post_dict['sched_desc'],
-                                                        start_time=start_time,
-                                                        end_time=end_time
-                                                        )
-            create_day_model(post_dict.getlist('days'), schedule_obj)
+            sched_obj = ScheduleBlock.objects.create(schedule_name=post_dict['sched_name'],
+                                                    schedule_desc=post_dict['sched_desc'],
+                                                    start_time=start_time,
+                                                    end_time=end_time
+                                                    )
+            create_day_model(post_dict.getlist('days'), sched_obj)
             # TODO: Return the user to the page.
     else:
         return register_schedule_information(request)

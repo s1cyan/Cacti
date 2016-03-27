@@ -2,14 +2,6 @@ from django import forms
 from models import User, ScheduleBlock, Day
 
 
-class RegistrationForm(forms.ModelForm):
-    email = forms() # wat
-
-    class Meta:
-        model = User
-        field = ('email',)
-
-
 class ScheduleBlockForm(forms.ModelForm):
     """
     This form is associated with the ScheduleBlock Model found in
@@ -18,7 +10,7 @@ class ScheduleBlockForm(forms.ModelForm):
     class Meta:
         model = ScheduleBlock
         fields = ['start_time', 'end_time',
-                  'schedule_name', 'schedule_description']
+                  'schedule_name', 'schedule_desc']
 
 
 class DayForm(forms.ModelForm):
@@ -28,4 +20,4 @@ class DayForm(forms.ModelForm):
     """
     class Meta:
         model = Day
-        field = ['date']
+        fields = ['date']
