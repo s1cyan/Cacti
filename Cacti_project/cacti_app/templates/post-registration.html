@@ -26,8 +26,11 @@
 			<div class="row">
 				<div class="fieldWrapper">
 					<div class="col s6 offset-s3">
+                        {% if time_error %}
+                        <h5>Please fix these errors!<h5>
+                        {% endif %}
 						<label for="start_time">Start Time:</label>
-						<input type="time" name="start_time" id="start_time" required>
+						<input type="time" name="start_time" id="start_time" class="validate" required>
 					</div>
 				</div>
 			</div>
@@ -35,8 +38,11 @@
 			<div class="row">
 				<div class="fieldWrapper">
 					<div class="col s6 offset-s3">
+                        {% if time_error %}
+                        <h5>Please fix these errors!<h5>
+                        {% endif %}
 						<label for="end_time">End Time:</label>
-						<input type="time" name="end_time" id="end_time" required>
+						<input type="time" name="end_time" id="end_time" class="validate" required>
 					</div>
 				</div>
 			</div>
@@ -44,19 +50,18 @@
 			<div class="row">
 				<div class="input-field col s12">
 					<label for="sched_desc">Schedule Description</label>
-					<textarea id="sched_desc" class="materialize-textarea" name="sched_desc" length="120"></textarea>
+					<textarea id="sched_desc" class="materialize-textarea" name="sched_desc" length="120" class="validate"></textarea>
 				</div>
 			</div>
 
             <div class="row">
-                <button class="waves-effect waves-light btn-large" href="{{ schedule_url }}" type="submit" name="action">Add Another Block</a>
+                <button class="waves-effect waves-light btn-large" href="{{ schedule_url }}" type="submit" name="action">Add Another Block</button>
             </div>
-
-            <div class="row">
-                <button class="waves-effect waves-light btn-large" href="#" type="submit" name="action">Finished</a>
-            </div>
-		</form>
-	</div>
+        </form>
+    </div>
+    <div class="row center">
+        <button class="waves-effect waves-light btn-large" href="{{ finished_url }}">Finished</button>
+    </div>
 </div>
 
 <!-- Jquery imports -->

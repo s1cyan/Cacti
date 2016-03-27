@@ -90,36 +90,10 @@ def register_schedule_information(request):
 
 def process_sched_info(request):
     """
-    Processes and attempts to validate the form. If the form is correct,
-    returns the correct page, otherwise a warning is spit out to the user.
+    Processes the query dictionary and attempts to create the models needed
+    in the database.
+    :param request: dict
+    :return: None 
     """
-    # TODO: Check if the start time is less than the end time.
-    # TODO: Do logic processing, if the form is correct return the user to the
-    # right page, if not, spit out error
-    # TODO: Delete from the database.
-    post_dict = request.POST
-    # Convert the string into actual datetime objects.
-    start_time = datetime.strptime(post_dict['start_time'], '%H:%M').time()
-    end_time = datetime.strptime(post_dict['end_time'], '%H:%M').time()
+    pass
 
-    if start_time < end_time:
-        try:
-            # If there is already an existing schedule block taking up
-            # that timeframe, return the User back to the original page.
-            sched_obj = ScheduleBlock.objects.get(
-                schedule_name=post_dict['sched_name'],
-                schedule_description=post_dict['sched_desc'],
-                start_time=start_time,
-                end_time=end_time
-                )
-            # TODO: Return the original page with exception errors.
-        except:
-            sched_obj = ScheduleBlock.objects.create(schedule_name=post_dict['sched_name'],
-                                                    schedule_desc=post_dict['sched_desc'],
-                                                    start_time=start_time,
-                                                    end_time=end_time
-                                                    )
-            create_day_model(post_dict.getlist('days'), sched_obj)
-            # TODO: Return the user to the page.
-    else:
-        return register_schedule_information(request)
