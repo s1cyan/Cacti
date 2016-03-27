@@ -8,8 +8,8 @@ from django.utils import timezone
 class ScheduleBlock(models.Model):
     schedule_name = models.CharField(max_length=10, primary_key=True)
     schedule_desc = models.CharField(max_length=128)
-    start_time = models.TimeField(timezone.now())
-    end_time = models.TimeField(timezone.now())
+    start_time = models.TimeField(default=timezone.now())
+    end_time = models.TimeField(default=timezone.now())
     # TODO: Add the User Model to the ForeignKey
     # user = models.ForeignKey(User)
     

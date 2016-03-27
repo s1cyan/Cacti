@@ -15,7 +15,7 @@
 			{% csrf_token %}
 			<div class="row">
 				<div class="input-field col s6 offset-s3">
-					<input placeholder="Name of schedule" id="sched-title" name="sched_name" type="text">
+					<input placeholder="Name of schedule" id="sched-title" name="sched_name" type="text" required>
 					<label for="sched-title">Schedule Title</label>
 				</div>
 			</div>
@@ -32,7 +32,6 @@
 					<div class="col s4">
 						<h4>Start Time:</h4>
 					</div>
-
 					<div class="input-field col s4">
                         <input id="start_time" type="time" name="start_time">
 					</div>
@@ -42,7 +41,6 @@
 					<div class="col s4">
 						<h4>End Time:</h4>
 					</div>
-
 					<div class="input-field col s4">
 						<input id="end_time" type="time" name="end_time">
 					</div>
@@ -63,8 +61,12 @@
 					</div>
 				</div>
 			</div>
-            <button class="waves-effect waves-light btn-large" href="{{ schedule_url }}" type="submit" name="action">Add Another Block</a>
-            <button class="waves-effect waves-light btn-large" href="#" type="submit" name="action">Finished</a>
+            <div class="row">
+                <button class="waves-effect waves-light btn-large" href="{{ schedule_url }}" type="submit" name="action">Add Another Block</a>
+            </div>
+            <div class="row">
+                <button class="waves-effect waves-light btn-large" href="#" type="submit" name="action">Finished</a>
+            </div>
 		</form>
 	</div>
 </div>
@@ -75,7 +77,6 @@
 <script>
 	$(document).ready(function () {
 		$('select').material_select();
-		$('#days').val();
 	});
 </script>
 

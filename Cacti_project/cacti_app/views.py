@@ -116,7 +116,7 @@ def process_sched_info(request):
                                                         start_time=start_time,
                                                         end_time=end_time
                                                         )
-            # TODO: Call the create_day_model in schedule.py
             create_day_model(post_dict.getlist('days'), schedule_obj)
+            # TODO: Return the user to the page.
     else:
         return register_schedule_information(request)
