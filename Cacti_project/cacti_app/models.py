@@ -8,6 +8,14 @@ from django.utils import timezone
 class Day(models.Model):
     day = models.IntegerField()
     user = models.ForeignKey(User)
+    
+
+class UserHelper(models.Model):
+    friends = models.ManyToManyField("self")
+    picture = models.ImageField()
+    status = models.BooleanField()
+    phone_number = models.IntegerField(max_length=11)
+    user = models.OneToOneField(User)
 
 
 class ScheduleBlock(models.Model):

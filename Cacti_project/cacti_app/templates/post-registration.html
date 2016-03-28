@@ -86,8 +86,12 @@
                         type: "POST",
                         url: "{{ schedule_process }}",
                         data: $("#sched_form").serializeArray(),
-                        success: console.log($("sched_form").serializeArray()),
-                        error: console.log($("sched_form").serializeArray()),
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        },
                         datatype: "json"
                     }
                 )

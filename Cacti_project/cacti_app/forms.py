@@ -7,10 +7,22 @@ class ScheduleBlockForm(forms.ModelForm):
     This form is associated with the ScheduleBlock Model found in
     models.py.
     """
+
     class Meta:
         model = ScheduleBlock
         fields = ['start_time', 'end_time',
                   'schedule_name', 'schedule_desc']
+
+
+class RegistrationForm(forms.ModelForm):
+    email = forms.EmailField()
+    username = forms.CharField(max_length=64)
+    password = forms.CharField(max_length=64)
+    password_confirmation = forms.CharField(max_length=64)
+
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password', 'password_confirmation')
 
 
 class DayForm(forms.ModelForm):
@@ -20,4 +32,14 @@ class DayForm(forms.ModelForm):
     """
     class Meta:
         model = Day
-        fields = ['date']
+        exclude = ['user']
+
+
+class LoginForm(forms.ModelForm):
+    email = forms.EmailField()
+    username = forms.CharField(max_length=64)
+    password = forms.CharField(max_length=64)
+
+    class Meta:
+        model = User
+        fields = ('username', 'password')
