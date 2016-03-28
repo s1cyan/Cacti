@@ -62,6 +62,10 @@
     <div class="row center">
         <button class="waves-effect waves-light btn-large" href="{{ finished_url }}">Finished</button>
     </div>
+
+    <div class="row center">
+        <button class="waves-effect waves-light btn-large" href="#" id='ajax-test'>Test Ajax</button>
+    </div>
 </div>
 
 <!-- Jquery imports -->
@@ -70,6 +74,27 @@
 <script>
 	$(document).ready(function () {
 		$('select').material_select();
+
+        $('#ajax-test').click(function () {
+            var startTime = $('#start_time').val().split(':');
+            var endTime = $('#end_time').val().split(':');
+
+            var currentDate = new Date().toLocaleString().split('/');
+
+            var dateStart = new Date(parseInt(currentDate[0]), parseInt(currentDate[1]), parseInt(currentDate[2]), parseInt(startTime[0]), parseInt(startTime[1]));
+            var dateEnd = new Date(parseInt(currentDate[0]), parseInt(currentDate[1]), parseInt(currentDate[2]), parseInt(endTime[0]), parseInt(endTime[1]));
+
+            if (dateStart < dateEnd) {
+                console.log('True');
+                console.log(dateStart);
+                console.log(dateEnd);
+            }
+            else {
+                console.log('False');
+                console.log(dateStart);
+                console.log(dateEnd);
+            }
+        });
 	});
 </script>
 
