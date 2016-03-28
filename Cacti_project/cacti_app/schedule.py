@@ -47,15 +47,16 @@ def process_sched_info(querydict):
                 schedule_description=post_dict['sched_desc'],
                 start_time=start_time,
                 end_time=end_time
-                )
+            )
             # TODO: Return the dictionary with the errors.
             return render(request, 'post-registration.html', {})
         except:
             sched_obj = ScheduleBlock.objects.create(schedule_name=post_dict['sched_name'],
-                                                    schedule_desc=post_dict['sched_desc'],
-                                                    start_time=start_time,
-                                                    end_time=end_time
-                                                    )
+                                                     schedule_desc=post_dict[
+                                                         'sched_desc'],
+                                                     start_time=start_time,
+                                                     end_time=end_time
+                                                     )
             create_day_model(post_dict.getlist('days'), sched_obj)
             # TODO: Return the user to the page.
     else:

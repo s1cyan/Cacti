@@ -5,19 +5,19 @@ from django.utils import timezone
 
 
 # Create your models here.
+class Day(models.Model):
+    day = models.IntegerField()
+    user = models.ForeignKey(User)
+
+
 class ScheduleBlock(models.Model):
     schedule_name = models.CharField(max_length=10, primary_key=True)
     schedule_desc = models.CharField(max_length=128)
     start_time = models.TimeField(default=timezone.now())
     end_time = models.TimeField(default=timezone.now())
-    # TODO: Add the User Model to the ForeignKey
-    # user = models.ForeignKey(User)
-    
+    day = models.ForeignKey(Day)
+    user = models.ForeignKey(User)
+
     # Allows ease of debugging by returning an identifier.
     def __unicode__(self):
         return self.schedule_name
-
-
-class Day(models.Model):
-    date = models.IntegerField()
-    schedule_block = models.ForeignKey(ScheduleBlock)

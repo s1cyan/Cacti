@@ -84,7 +84,6 @@ def register_schedule_information(request):
             'schedule_process': '/cacti_app/process-schedule',
             'form': form
             }
-
     return render(request, 'post-registration.html', context_dict)
 
 
@@ -93,7 +92,10 @@ def process_sched_info(request):
     Processes the query dictionary and attempts to create the models needed
     in the database.
     :param request: dict
-    :return: None 
+    :return: None
     """
+    try:
+        pass
+    except:
+        pass
     pass
-
