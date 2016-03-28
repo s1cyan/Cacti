@@ -25,13 +25,41 @@
 <ul id="sidenav" class="side-nav fixed grey">
 	<li class="logo"><a id="logo-container" href="#"> <h1>Cacti</h1></a></li>
 	<hr>
+	<li class="user-details deep-orange  ">
+		<div class="row deep-orange container">
+			<div class="col col s8 m8 l8 ">
+				<a class='btn-flat dropdown-button waves-light waves-effect white-text' href='#' data-beloworigin="true" data-activates='user-dropdown' data-constrainwidth="false">User</a>
+				<ul id='user-dropdown' class='dropdown-content deep-orange'>
+					<li>
+						<div class="valign-wrapper">
+						<a class=" white-text valign" href="#">Available</a>
+						</div>
+					</li>
+
+					<li>
+						<div class="valign-wrapper">
+							<a class="white-text valign" href="#">Logout</a>
+						</div>
+					</li>
+
+					<!--<li class="divider"></li>-->
+					<!--<li><a href="#!">three</a></li>-->
+				</ul>
+			</div>
+			<div class="col col s4 m4 l4 ">
+					<img class="circle responsive-img"  src="https://pixabay.com/static/uploads/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" >
+			</div>
+
+
+		</div>
+	</li>
 	<li><a href="#">Status</a></li>
 	<li><a href="#">Home</a></li>
 	<li><a href="#">Profile</a></li>
 	<li><a href="#">Friends</a></li>
-	<li class="search">
+	<li class="search deep-orange">
 		<form>
-			<div class="input-field deep-orange darken-1">
+			<div class="input-field deep-orange">
 				<input id="search" type="search"><i class="material-icons white-text">search</i>
 			</div>
 		</form>
@@ -68,6 +96,7 @@
 		$('.button-collapse').sideNav();
 		$(".button-collapse").sideNav('show');
 		$(".button-collapse").sideNav('hide');
+		$('.dropdown-button').sideNav();
 
 
 	})
