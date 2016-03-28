@@ -1,31 +1,29 @@
-{% extends 'default.html' %}
-
-{% block body %}
+{% extends 'default.html' %} {% block body %}
 
 <div class="section no-pad-bot" id="index-banner">
-	<div class="container">
-		<br>
-		<h1 class="header center orange-text">Cacti</h1>
-		<div class="row center">
-			<h5 class="header col s12 light">Add a time frame when you're not free. We'll keep track of this.</h5>
-		</div>
-	</div>
-	<div class="row center">
+    <div class="container">
+        <br>
+        <h1 class="header center orange-text">Cacti</h1>
+        <div class="row center">
+            <h5 class="header col s12 light">Add a time frame when you're not free. We'll keep track of this.</h5>
+        </div>
+    </div>
+    <div class="row center">
         <form class="col s6 offset-s3" action="{{ schedule_process }}" method="post">
-			{% csrf_token %}
+            {% csrf_token %}
             <div class="row">
                 <div class="fieldWrapper">
                     <div class="col s6 offset-s3">
-						{{ form.schedule_name.errors }}
-						<label for="{{ form.schedule_name.id_for_label }}">Schedule Title:</label>
-						{{ form.schedule_name }}
+                        {{ form.schedule_name.errors }}
+                        <label for="{{ form.schedule_name.id_for_label }}">Schedule Title:</label>
+                        {{ form.schedule_name }}
                     </div>
                 </div>
             </div>
 
-			<div class="row">
-				<div class="fieldWrapper">
-					<div class="col s6 offset-s3">
+            <div class="row">
+                <div class="fieldWrapper">
+                    <div class="col s6 offset-s3">
                         {% if time_error %}
                         <h5>Please fix these errors!<h5>
                         {% endif %}
@@ -70,6 +68,7 @@
 
 <!-- Jquery imports -->
 {% include "scripts.html" %}
+<script type="text/javascript" src="/static/js/datecheck.js"></script>
 <!-- Initialization -->
 <script>
 	$(document).ready(function () {
@@ -78,23 +77,13 @@
         $('#ajax-test').click(function () {
             var startTime = $('#start_time').val().split(':');
             var endTime = $('#end_time').val().split(':');
-
-            var currentDate = new Date().toLocaleString().split('/');
-
-            var dateStart = new Date(parseInt(currentDate[0]), parseInt(currentDate[1]), parseInt(currentDate[2]), parseInt(startTime[0]), parseInt(startTime[1]));
-            var dateEnd = new Date(parseInt(currentDate[0]), parseInt(currentDate[1]), parseInt(currentDate[2]), parseInt(endTime[0]), parseInt(endTime[1]));
-
-            if (dateStart < dateEnd) {
+            if (areDatesCorrect(startTime, endTime)) {
                 // TODO: Call the .ajax() function here
                 console.log('True');
-                console.log(dateStart);
-                console.log(dateEnd);
             }
             else {
                 // TODO: Prevent the form from submitting
                 console.log('False');
-                console.log(dateStart);
-                console.log(dateEnd);
             }
         });
 	});

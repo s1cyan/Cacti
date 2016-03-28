@@ -1,5 +1,5 @@
 function areDatesCorrect(startDate, endDate) {
-    var currentDate = new Date().toLocaleString.split('/')
+    var currentDate = new Date().toLocaleString().split('/')
     var dateStart = new Date(
         parseInt(currentDate[0]),
         parseInt(currentDate[1]),
