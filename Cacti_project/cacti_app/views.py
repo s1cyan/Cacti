@@ -1,4 +1,8 @@
 from django.shortcuts import render
+<<<<<<< HEAD
+=======
+from forms import RegistrationForm, LoginForm
+>>>>>>> registration_to_database
 from django.contrib.auth.models import User
 from models import ScheduleBlock, Day
 from datetime import datetime
@@ -18,12 +22,12 @@ def greeting_page(request):
     :return: greetings.html
     """
     context_dict = {
-            'page_title': 'Cacti',
-            'slogan': 'We need a slogan.',
-            'show_image': True,
-            'register_url': '/cacti_app/register',
-            'login_url': '/cacti_app/login'
-            }
+        'page_title': 'Cacti',
+        'slogan': 'We need a slogan.',
+        'show_image': True,
+        'register_url': '/cacti_app/register',
+        'login_url': '/cacti_app/login'
+    }
     return render(request, 'greetings.html', context_dict)
 
 
@@ -48,12 +52,12 @@ def login_page(request):
 def password_check(request):
     password = request.POST['password']
     username = request.POST['username']
-    p = authenticate(username=username,password=password)
+    p = authenticate(username=username, password=password)
     if p is not None:  # password works for user
-        return render(request,'home-page.html')
+        return render(request, 'home-page.html')
     else:
         print ('id/password incorrect')
-        return render(request,'login-page.html')
+        return render(request, 'login-page.html')
 
 
 def register_page(request):
@@ -98,7 +102,7 @@ def registration_processing(request):
         return render(request, 'registration.html')
 
     except ObjectDoesNotExist:
-        User.objects.create_user(username=username,email=email,password=password)
+        User.objects.create_user(username=username, email=email, password=password)
         return render(request, 'ty-page.html')
 
 
@@ -107,15 +111,14 @@ def thank_you(request):
         'page_title': 'Thanks!',
         # 'continue_url_INVIEWS': '/cacti_app/home'
     }
-    return render(request,'ty-page.html', context_dict)
+    return render(request, 'ty-page.html', context_dict)
 
 
 def home(request):
-
     context_dict = {
         'page_title': 'Home',
     }
-    return render(request,'home-page.html',context_dict)
+    return render(request, 'home-page.html', context_dict)
 
 def search_page(request):
     context_dict = {'page_title': 'Cacti: Search for friends'}
