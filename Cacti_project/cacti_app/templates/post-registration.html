@@ -3,74 +3,104 @@
 {% block body %}
 
 <div class="section no-pad-bot" id="index-banner">
-	<div class="container">
-		<br>
-		<h1 class="header center orange-text">Cacti</h1>
-		<div class="row center">
-			<h5 class="header col s12 light">Add a time frame when you're not free. We'll keep track of this.</h5>
-		</div>
-	</div>
-	<div class="row center">
-		<form class="col s6 offset-s3">
-			<div class="row">
-				<div class="row">
-					<div class="col s4">
-						<h4>Start Time:</h4>
-					</div>
+    <div class="container">
+        <br>
+        <h1 class="header center orange-text">Cacti</h1>
+        <div class="row center">
+            <h5 class="header col s12 light">Add a time frame when you're not free. We'll keep track of this.</h5>
+        </div>
+    </div>
+    <div class="row center">
+        <form class="col s6 offset-s3" action="{{ schedule_process }}" method="post" id="sched_form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="fieldWrapper">
+                    <div class="col s6 offset-s3">
+                        {{ form.schedule_name.errors }}
+                        <label for="{{ form.schedule_name.id_for_label }}">Schedule Title:</label>
+                        {{ form.schedule_name }}
+                    </div>
+                </div>
+            </div>
 
-					<div class="input-field col s4">
-						<input id="email" type="number" class="validate" length="2">
-						<label class="active" for="email">Hour:</label>
-					</div>
-
-					<div class="input-field col s4">
-						<input id="username" type="number" class="validate" length="2">
-						<label class="active" for="username">Minute:</label>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col s4">
-						<h4>End Time:</h4>
-					</div>
-
-					<div class="input-field col s4">
-						<input id="email" type="number" class="validate" length="2">
-						<label class="active" for="email">Hour:</label>
-					</div>
-
-					<div class="input-field col s4">
-						<input id="username" type="number" class="validate" length="2">
-						<label class="active" for="username">Minute:</label>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="input-field col s6 offset-s3">
-						<select multiple>
-							<option value="" disabled selected>Select the days this timeframe applies to</option>
-							<option value="Monday">Monday</option>
-							<option value="Tuesday">Tuesday</option>
-							<option value="Wednesday">Wednesday</option>
-							<option value="Thursday">Thursday</option>
-							<option value="Friday">Friday</option>
-							<option value="Saturday">Saturday</option>
-							<option value="Sunday">Sunday</option>
-						</select>
+            <div class="row">
+                <div class="fieldWrapper">
+                    <div class="col s6 offset-s3">
+                        {% if time_error %}
+                        <h5>Please fix these errors!<h5>
+                        {% endif %}
+						<label for="start_time">Start Time:</label>
+						<input type="time" name="start_time" id="start_time" class="validate" required>
 					</div>
 				</div>
 			</div>
-			<a class="waves-effect waves-light btn-large" href="#">Add Another Time Frame</a>
-		</form>
-	</div>
+
+			<div class="row">
+				<div class="fieldWrapper">
+					<div class="col s6 offset-s3">
+                        {% if time_error %}
+                        <h5>Please fix these errors!<h5>
+                        {% endif %}
+						<label for="end_time">End Time:</label>
+						<input type="time" name="end_time" id="end_time" class="validate" required>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<label for="sched_desc">Schedule Description</label>
+					<textarea id="sched_desc" class="materialize-textarea" name="sched_desc" length="120" class="validate"></textarea>
+				</div>
+			</div>
+
+            <div class="row">
+                <button class="waves-effect waves-light btn-large" href="{{ schedule_url }}" type="submit" name="action" id="submit">Add Another Block</button>
+            </div>
+        </form>
+    </div>
+    <div class="row center">
+        <button class="waves-effect waves-light btn-large" href="{{ finished_url }}">Finished</button>
+    </div>
+
+    <div class="row center">
+        <button class="waves-effect waves-light btn-large" href="#" id='ajax-test'>Test Ajax</button>
+    </div>
 </div>
 
 <!-- Jquery imports -->
 {% include "scripts.html" %}
+<script type="text/javascript" src="/static/js/datecheck.js"></script>
 <!-- Initialization -->
 <script>
 	$(document).ready(function () {
 		$('select').material_select();
+
+        $('#submit').click(function (e) {
+            var startTime = $('#start_time').val().split(':');
+            var endTime = $('#end_time').val().split(':');
+            if (areDatesCorrect(startTime, endTime)) {
+                // TODO: Call the .ajax() function here
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "{{ schedule_process }}",
+                        data: $("#sched_form").serializeArray(),
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        },
+                        datatype: "json"
+                    }
+                )
+            }
+            else {
+                // TODO: Prevent the form from submitting
+                e.preventDefault();
+            }
+        });
 	});
 </script>
 
