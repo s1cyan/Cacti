@@ -1,8 +1,6 @@
 from django.shortcuts import render
-<<<<<<< HEAD
-=======
+
 from forms import RegistrationForm, LoginForm
->>>>>>> registration_to_database
 from django.contrib.auth.models import User
 from models import ScheduleBlock, Day
 from datetime import datetime
