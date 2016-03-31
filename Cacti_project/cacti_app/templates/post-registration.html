@@ -3,15 +3,13 @@
 {% block body %}
 
 <div class="section no-pad-bot" id="index-banner">
-    <div class="container">
+    <div class="container" id="form">
         <br>
         <h1 class="header center orange-text">Cacti</h1>
         <div class="row center">
             <h5 class="header col s12 light">Add a time frame when you're not free. We'll keep track of this.</h5>
         </div>
-        <div class="row center">
-            {% include "schedule_form.html" %}
-        </div>
+        {% include "schedule_form.html" %}
     </div>
 </div>
 
@@ -22,6 +20,10 @@
 <script>
 	$(document).ready(function () {
 		$('select').material_select();
+
+        $("#submit").click(function () {
+            $("#form").clone().appendTo("#form");
+        });
 
         $('#ajax-test').click(function (e) {
             var startTime = $('#start_time').val().split(':');
