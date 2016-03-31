@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from . import views
+from . import hidden_views
 
 urlpatterns = [
     # TODO: Add urls
@@ -14,4 +15,5 @@ urlpatterns = [
         views.registration_processing, name='processing'),
     url(r'^thankyou', views.thank_you, name='thankyou'),
     url(r'home', views.home, name='home'),
+    url(r'^error', hidden_views.error_message, name='error'),
 ]
