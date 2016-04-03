@@ -118,6 +118,7 @@ def home(request):
     }
     return render(request, 'home-page.html', context_dict)
 
+
 def search_page(request):
     context_dict = {'page_title': 'Cacti: Search for friends'}
     return render(request, 'search-page.html', context_dict)
