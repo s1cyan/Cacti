@@ -101,6 +101,7 @@ def registration_processing(request):
 
     except ObjectDoesNotExist:
         User.objects.create_user(username=username, email=email, password=password)
+        authenticate(username = username, password = password) #authentication is the logged in check?
         return render(request, 'ty-page.html')
 
 
