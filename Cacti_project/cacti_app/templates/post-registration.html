@@ -21,37 +21,25 @@
 	$(document).ready(function () {
 		$('select').material_select();
 
-        $("#submit").click(function () {
-            $("#form").clone().appendTo("#form");
-        });
+        var count = 0;
 
-        $('#ajax-test').click(function (e) {
-            var startTime = $('#start_time').val().split(':');
-            var endTime = $('#end_time').val().split(':');
-            if (areDatesCorrect(startTime, endTime)) {
-                $.ajax(
-                    {
-                        type: "POST",
-                        url: "{{ schedule_process }}",
-                        data: $("#sched_form").serializeArray(),
-                        success: function (data) {
-                            console.log(data);
-                        },
-                        error: function (err) {
-                            console.log(err);
-                        },
-                        datatype: "json"
-                    }
-                )
-            }
-            else {
-                $("#start_error").load("error_messages.html");
-                $("#end_error").load("error_messages.html");
-                e.preventDefault();
-            }
+        $('#add').click(function (e) {
+            var source = $('form:first');
+            var clone = source.clone();
+
+            clone.find(':input').attr('id', function(i, val) {
+                return val + count;
+            });
+
+            clone.find(':input').attr('id', function (i, val) {
+                return val + count;
+            });
+
+            clone.appendTo('#form_stuff');
+            count++;
             e.preventDefault();
         });
-	});
+    });
 </script>
 
 {% endblock %}
