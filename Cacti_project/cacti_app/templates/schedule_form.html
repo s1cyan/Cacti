@@ -1,5 +1,5 @@
 <div class="row center" id="form_stuff">
-    <form class="col s6 offset-s3" action="{{ schedule_process }}" method="post" id="sched_form">
+    <form class="col s6 offset-s3" action="{{ schedule_process }}" method="post">
         {% csrf_token %}
         <div class="row">
             <div class="col s6 offset-s3">
@@ -39,8 +39,5 @@
     <div class="row col s6 offset-s3" id="button-section">
         <button class="waves-effect waves-light btn-large" id="add">Add Another Block</button>
         <button class="waves-effect waves-light btn-large" id="ajax-test">Ajax Test</button>
-    </div>
-
-    <div class="row col s6 offset-s3" id="submit-section">
     </div>
 </div>

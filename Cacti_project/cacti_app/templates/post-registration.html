@@ -40,6 +40,12 @@
             count++;
             e.preventDefault();
         });
+
+        $('#ajax-test').click(function (e) {
+            var forms = document.getElementsByTagName('form');
+            console.log(forms);
+            console.log(forms[0][1]['value']);
+        });
     });
 </script>
 
