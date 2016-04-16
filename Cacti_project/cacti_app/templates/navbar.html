@@ -15,7 +15,7 @@
 				</div>
 				<li>
 					<a class='btn-flat left dropdown-button waves-light white-text' href='#' data-beloworigin="true" data-activates='user-dropdown' data-constrainwidth="false">
-						User
+						{{ username }}
 
 						<i class="mdi-hardware-keyboard-arrow-down"></i>
 					</a>
@@ -47,7 +47,6 @@
 					</label>
 				</div>
 
-
 			</div>
 
 
@@ -56,9 +55,9 @@
 		<li><a class="white-text" href="#">Profile</a></li>
 		<li><a class="white-text" href="#">Friends</a></li>
 		<li class="search deep-orange">
-			<form>
+			<form method="get">
 				<div class="input-field deep-orange">
-					<input id="search" type="search"><i class="material-icons white-text">search</i>
+					<input id="search-form" type="search"><i class="material-icons white-text">search</i>
 				</div>
 			</form>
 		</li>

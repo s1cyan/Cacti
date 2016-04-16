@@ -5,10 +5,11 @@ from django.contrib.auth.models import User
 from models import ScheduleBlock, Day
 from datetime import datetime
 from schedule import create_day_model
-from forms import RegistrationForm,LoginForm
+from forms import RegistrationForm,LoginForm,SearchForm
 from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist
 from forms import DayForm, ScheduleBlockForm
+import re
 
 
 def greeting_page(request):
@@ -37,13 +38,13 @@ def login_page(request):
     :return: login.html
     """
     login_form = LoginForm(request.POST)
-    # TODO: Authenticate the user and log them in using Django's User model.
     context_dict = {
         'page_title': 'Login',
-        'slogan': 'Let\'s get you signed up with this service.',
+        'slogan': 'Login to Cacti',
         'form': login_form,
         'password_check_INVIEWS': '/cacti_app/password_check'
     }
+
     return render(request, 'login-page.html', context_dict)
 
 
@@ -52,7 +53,7 @@ def password_check(request):
     username = request.POST['username']
     p = authenticate(username=username, password=password)
     if p is not None:  # password works for user
-        return render(request, 'home-page.html')
+        return home(request,p)
     else:
         print ('id/password incorrect')
         return render(request, 'login-page.html')
@@ -69,6 +70,7 @@ def register_page(request):
     # print request.POST
     context_dict = {
         'page_title': 'Registration',
+        'slogan': 'Let\'s get you signed up with this service.',
         'show_image': False,
         'form': register_form,
         'processing_url_INVIEWS': '/cacti_app/registration_processing'
@@ -101,7 +103,7 @@ def registration_processing(request):
 
     except ObjectDoesNotExist:
         User.objects.create_user(username=username, email=email, password=password)
-        authenticate(username = username, password = password) #authentication is the logged in check?
+        authenticate(username=username, password=password) #authentication is the logged in check?
         return render(request, 'ty-page.html')
 
 
@@ -113,10 +115,38 @@ def thank_you(request):
     return render(request, 'ty-page.html', context_dict)
 
 
-def home(request):
+def home(request, user_instance):
+    '''
+    :param user_instance: User
+    :return:
+    '''
+    search_form = SearchForm(request.GET)
     context_dict = {
         'page_title': 'Home',
+        'username': user_instance.username,
+        'form': search_form,
     }
+    if request.method == 'GET':
+        search_input = request.GET.get('search-form') #(key,None) key = grabs the value in 'search-form'
+        emailRegex = r'@.*/..*'
+        emailResult = (emailRegex,input)
+        if emailResult:
+            try:
+                user = User.objects.get(email=search_input)
+                username = user.username
+                email = user.email
+
+            except ObjectDoesNotExist:
+                # make block say not found search_not_found
+                return render(request)
+        else:
+            try:
+                user = User.objects.get(username=search_input)
+                username = user.username
+                email = user.email
+            except ObjectDoesNotExist:
+                # make block say not found
+                return render(request)
     return render(request, 'home-page.html', context_dict)
 
 
@@ -155,3 +185,16 @@ def process_sched_info(request):
     except:
         pass
     pass
+
+#
+# def search(request):
+#     input = request.POST['search']
+#     emailRegex = r'@.*/.com'
+#     emailResult = (emailRegex,input)
+#     if emailResult:
+#         try:
+#             User.objects.get(email = input)
+#             return render(request,'search-page.html') #change the contents of the search page to have the user's info
+#
+#         except ObjectDoesNotExist:
+#             return render(request,'search-page.html')# contents = user not found

@@ -14,4 +14,5 @@ urlpatterns = [
         views.registration_processing, name='processing'),
     url(r'^thankyou', views.thank_you, name='thankyou'),
     url(r'home', views.home, name='home'),
+    url(r'search', views.search_page, name='search'),
 ]

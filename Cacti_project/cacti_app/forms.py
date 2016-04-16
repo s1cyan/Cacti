@@ -1,5 +1,5 @@
 from django import forms
-from models import User, ScheduleBlock, Day
+from models import User, ScheduleBlock, Day, UserHelper
 
 
 class ScheduleBlockForm(forms.ModelForm):
@@ -43,3 +43,8 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+
+class SearchForm(forms.Form):
+    search_input = forms.CharField(max_length=64)
+
