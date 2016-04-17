@@ -16,6 +16,7 @@
 <!-- Jquery imports -->
 {% include "scripts.html" %}
 <script type="text/javascript" src="/static/js/datecheck.js"></script>
+<script type="text/javascript" src="/static/js/constructJSON.js"></script>
 <!-- Initialization -->
 <script>
 	$(document).ready(function () {
@@ -46,10 +47,26 @@
         $('#ajax-test').click(function (e) {
             var forms = document.getElementsByTagName('form');
             console.log(forms);
-            console.log(forms[0][1]['value']);
-            console.log(forms[0][2]['value']);
-            console.log(forms[0][3]['value']);
-            console.log(forms[0][4]['value']);
+            for (var i = 0; i < forms.length; i++) {
+                var jsonObject = makeJSON(forms[i][0]['defaultValue'], forms[i][1]['value'], forms[i][2]['value'], forms[i][3]['value'], forms[i][4]['value']);
+                serializationList.push(jsonObject);
+            }
+
+            for (var i = 0; i < serializationList.length; i++) {
+                console.log(serializationList[i]);
+                $.ajax({
+                    type: "POST",
+                    url: "/cacti_app/process-schedule",
+                    data: serializationList[i],
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    },
+                    datatype: "json"
+                });
+            }
         });
     });
 </script>

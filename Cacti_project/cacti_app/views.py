@@ -8,7 +8,7 @@ from schedule import create_day_model
 from forms import RegistrationForm,LoginForm
 from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist
-from forms import DayForm, ScheduleBlockForm
+from forms import ScheduleBlockForm
 
 
 def greeting_page(request):
@@ -141,15 +141,11 @@ def register_schedule_information(request):
     return render(request, 'post-registration.html', context_dict)
 
 
-def process_sched_info(request):
+def process_schedule_info(request):
     """
     Processes the query dictionary and attempts to create the models needed
     in the database.
     :param request: dict
     :return: None
     """
-    try:
-        pass
-    except:
-        pass
-    pass
+    print request.POST
