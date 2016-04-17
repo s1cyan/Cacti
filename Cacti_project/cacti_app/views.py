@@ -42,21 +42,38 @@ def login_page(request):
         'page_title': 'Login',
         'slogan': 'Login to Cacti',
         'form': login_form,
-        'password_check_INVIEWS': '/cacti_app/password_check'
+        'home_page':'/cacti_app/home',
+        # 'process_password': '/cacti_app/password_check'
     }
+    if request.method=='POST':
+        if password_check(request) is not False:
+            return home(request, password_check(request))
+        else:
+            print('id/password is incorrect')
+            return render(request,'login-page.html',context_dict)
+        # return password_check(request)
 
-    return render(request, 'login-page.html', context_dict)
+    else:
+        return render(request, 'login-page.html', context_dict)
 
 
 def password_check(request):
     password = request.POST['password']
     username = request.POST['username']
     p = authenticate(username=username, password=password)
-    if p is not None:  # password works for user
-        return home(request,p)
+    if p is not None:
+        return p
     else:
-        print ('id/password incorrect')
-        return render(request, 'login-page.html')
+        return False
+# def password_check(request):
+#     password = request.POST['password']
+#     username = request.POST['username']
+#     p = authenticate(username=username, password=password)
+#     if p is not None:  # password works for user
+#         return home(request,p)
+#     else:
+#         print ('id/password incorrect')
+#         return render(request, 'login-page.html')
 
 
 def register_page(request):

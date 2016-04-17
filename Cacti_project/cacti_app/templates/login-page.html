@@ -5,7 +5,7 @@
     <div class="container">
         {% include "cacti_header.html" %}
         <div class="row center">
-            <form id="login-form" class="col s6 offset-s3" method="post" action="{{ password_check_INVIEWS }}">
+            <form id="login-form" class="col s6 offset-s3" method="post" >
                 {% csrf_token %}
 
                 <div class="row">
