@@ -6,7 +6,7 @@
 		{% include "cacti_header.html" %}
 		<div class="row center">
 			<!--{{form}}-->
-			<form id = "registration-form" class="col s6 offset-s3" method="post" action="{{ processing_url_INVIEWS }}">
+			<form id = "registration-form" class="col s6 offset-s3" method="post" action="{{ process_registration }}">
 
 				{% csrf_token %}
 
@@ -32,7 +32,7 @@
 				</div>
 				<!--<input type="submit" name="submit" value="registration" />-->
 				<!--<a class="waves-effect waves-light btn-large" href="#"><input type="submit"/>Submit</a>-->
-				<button class="btn waves-effect waves-light btn-large" type="submit" name="action" >Submit
+				<button class="btn waves-effect waves-light btn-large" href="processing_url_INVIEWS" type="submit" name="action">Submit
 					<i class="material-icons right">send</i>
 				</button>
 			</form>

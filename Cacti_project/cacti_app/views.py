@@ -73,7 +73,8 @@ def register_page(request):
         'slogan': 'Let\'s get you signed up with this service.',
         'show_image': False,
         'form': register_form,
-        'processing_url_INVIEWS': '/cacti_app/registration_processing'
+        'ty_url':'/cactu_app/thankyou',
+        'process_registration': '/cacti_app/registration_processing'
     }
     return render(request, 'registration.html', context_dict)
 
@@ -93,18 +94,24 @@ def registration_processing(request):
 
     if password != confirmation:
         print ('passwords not the same')
-        return render(request, 'registration.html')
+        return register_page(request)
+        # return render(request, 'registration.html')
 
+#have to check if email is taken- if not check if username is taken. If you do both at the same time, one not exist will register user
     try:
         User.objects.get(email=email)
-        User.objects.get(username=username)
-        print ('email/username already exists')
+        print ('email already exists')
         return render(request, 'registration.html')
 
     except ObjectDoesNotExist:
-        User.objects.create_user(username=username, email=email, password=password)
-        authenticate(username=username, password=password) #authentication is the logged in check?
-        return render(request, 'ty-page.html')
+        try:
+            User.objects.get(username=username)
+            print ('username already exists')
+            return render(request, 'registration.html')
+        except ObjectDoesNotExist:
+            User.objects.create_user(username=username, email=email, password=password)
+            authenticate(username=username, password=password) #authentication is the logged in check?
+            return thank_you(request)
 
 
 def thank_you(request):
