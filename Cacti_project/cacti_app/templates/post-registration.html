@@ -23,6 +23,8 @@
 
         var count = 0;
 
+        var serializationList = [];
+
         $('#add').click(function (e) {
             var source = $('form:first');
             var clone = source.clone();
@@ -45,6 +47,9 @@
             var forms = document.getElementsByTagName('form');
             console.log(forms);
             console.log(forms[0][1]['value']);
+            console.log(forms[0][2]['value']);
+            console.log(forms[0][3]['value']);
+            console.log(forms[0][4]['value']);
         });
     });
 </script>
