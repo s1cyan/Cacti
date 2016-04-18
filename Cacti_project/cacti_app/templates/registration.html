@@ -6,33 +6,33 @@
 		{% include "cacti_header.html" %}
 		<div class="row center">
 			<!--{{form}}-->
-			<form id = "registration-form" class="col s6 offset-s3" method="post" action="{{ processing_url_INVIEWS }}">
+			<form id = "registration-form" class="col s6 offset-s3" method="post" action="{{ process_registration }}">
 
 				{% csrf_token %}
 
 				<div class="row">
 					<div class="input-field col s12">
-						<input id="email" name="email" type="email" class="validate">
-						<label class="active" for="email" data-error="Not an email" data-success="">Enter your email address:</label>
+						<input id="email" name="email" type="email" class="validate required">
+						<label class="active " for="email" data-error="Not an email" data-success="">Enter your email address:</label>
 
 					</div>
 					<div class="input-field col s12">
-						<input id="username" name = "username" type="text" class="validate">
+						<input id="username" name = "username" type="text" class="validate required">
 						<label class="active" for="username" >Enter your desired Username:</label>
 					</div>
 					<div class="input-field col s12">
-						<input id="password" name="password" type="password" class="validate">
+						<input id="password" name="password" type="password" class="validate required">
 						<label class="active" for="password">Enter your desired password:</label>
 					</div>
 
 					<div class="input-field col s12">
-						<input id="confirm" name="confirm" type="password" class="validate">
+						<input id="confirm" name="confirm" type="password" class="validate required">
 						<label class="active" for="confirm">Re-enter your password:</label>
 					</div>
 				</div>
 				<!--<input type="submit" name="submit" value="registration" />-->
 				<!--<a class="waves-effect waves-light btn-large" href="#"><input type="submit"/>Submit</a>-->
-				<button class="btn waves-effect waves-light btn-large" type="submit" name="action" >Submit
+				<button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit
 					<i class="material-icons right">send</i>
 				</button>
 			</form>

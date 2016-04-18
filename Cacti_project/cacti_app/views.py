@@ -1,14 +1,15 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
 from forms import RegistrationForm, LoginForm
 from django.contrib.auth.models import User
 from models import ScheduleBlock, Day
 from datetime import datetime
 from schedule import create_day_model
-from forms import RegistrationForm,LoginForm
-from django.contrib.auth import authenticate
+from forms import RegistrationForm,LoginForm,SearchForm
+from django.contrib.auth import authenticate,login
 from django.core.exceptions import ObjectDoesNotExist
 from forms import DayForm, ScheduleBlockForm
+from django.http import HttpResponseRedirect, HttpResponse
+import re
 
 
 def greeting_page(request):
@@ -37,25 +38,26 @@ def login_page(request):
     :return: login.html
     """
     login_form = LoginForm(request.POST)
-    # TODO: Authenticate the user and log them in using Django's User model.
     context_dict = {
         'page_title': 'Login',
-        'slogan': 'Let\'s get you signed up with this service.',
+        'slogan': 'Login to Cacti',
         'form': login_form,
-        'password_check_INVIEWS': '/cacti_app/password_check'
+        'home_page':'/cacti_app/home',
     }
-    return render(request, 'login-page.html', context_dict)
+    if request.method == 'POST':
+        password = request.POST['password']
+        username = request.POST['username']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect('home')
+        else:
+            print('id/password is incorrect')
+            return render(request,'login-page.html',context_dict)
 
-
-def password_check(request):
-    password = request.POST['password']
-    username = request.POST['username']
-    p = authenticate(username=username, password=password)
-    if p is not None:  # password works for user
-        return render(request, 'home-page.html')
     else:
-        print ('id/password incorrect')
-        return render(request, 'login-page.html')
+        return render(request, 'login-page.html', context_dict)
 
 
 def register_page(request):
@@ -69,9 +71,11 @@ def register_page(request):
     # print request.POST
     context_dict = {
         'page_title': 'Registration',
+        'slogan': 'Let\'s get you signed up with this service.',
         'show_image': False,
         'form': register_form,
-        'processing_url_INVIEWS': '/cacti_app/registration_processing'
+        'ty_url':'/cactu_app/thankyou',
+        'process_registration': '/cacti_app/registration_processing'
     }
     return render(request, 'registration.html', context_dict)
 
@@ -91,17 +95,24 @@ def registration_processing(request):
 
     if password != confirmation:
         print ('passwords not the same')
-        return render(request, 'registration.html')
+        return register_page(request)
+        # return render(request, 'registration.html')
 
+#have to check if email is taken- if not check if username is taken. If you do both at the same time, one not exist will register user
     try:
         User.objects.get(email=email)
-        User.objects.get(username=username)
-        print ('email/username already exists')
+        print ('email already exists')
         return render(request, 'registration.html')
 
     except ObjectDoesNotExist:
-        User.objects.create_user(username=username, email=email, password=password)
-        return render(request, 'ty-page.html')
+        try:
+            User.objects.get(username=username)
+            print ('username already exists')
+            return render(request, 'registration.html')
+        except ObjectDoesNotExist:
+            User.objects.create_user(username=username, email=email, password=password)
+            authenticate(username=username, password=password) #authentication is the logged in check?
+            return HttpResponseRedirect('thankyou')
 
 
 def thank_you(request):
@@ -113,13 +124,48 @@ def thank_you(request):
 
 
 def home(request):
+    """
+    :param request
+    :return:
+    """
+    search_form = SearchForm(request.GET)
     context_dict = {
         'page_title': 'Home',
+        'username': request.user.username,
+        'form': search_form,
     }
+    # search functionality
+    if request.method == 'GET':
+        search_input = request.GET.get('search-form') #(key,None) key = grabs the value in 'search-form'
+        emailRegex = r'@.*/..*'
+        emailResult = (emailRegex,input)
+        if emailResult:
+            try:
+                friend = User.objects.get(email=search_input)
+                f_username = friend.username
+                f_email = friend.email
+
+
+            except ObjectDoesNotExist:
+                # make block say not found search_not_found
+                return render(request,'home-page.html',context_dict)
+        else:
+            try:
+                friend = User.objects.get(username=search_input)
+                f_username = friend.username
+                f_email = friend.email
+
+            except ObjectDoesNotExist:
+                # make block say not found
+                return HttpResponse('cant find ur friend')
     return render(request, 'home-page.html', context_dict)
 
 
 def search_page(request):
+    context_dict = {
+        'friend_username',
+        'friend_email',
+    }
     context_dict = {'page_title': 'Cacti: Search for friends'}
     return render(request, 'search-page.html', context_dict)
 
@@ -154,3 +200,16 @@ def process_sched_info(request):
     except:
         pass
     pass
+
+#
+# def search(request):
+#     input = request.POST['search']
+#     emailRegex = r'@.*/.com'
+#     emailResult = (emailRegex,input)
+#     if emailResult:
+#         try:
+#             User.objects.get(email = input)
+#             return render(request,'search-page.html') #change the contents of the search page to have the user's info
+#
+#         except ObjectDoesNotExist:
+#             return render(request,'search-page.html')# contents = user not found
