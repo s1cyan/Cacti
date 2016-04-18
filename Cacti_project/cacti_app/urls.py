@@ -1,15 +1,11 @@
 from django.conf.urls import url
-from django.views.generic.base import RedirectView
 from . import views
-
 
 
 urlpatterns = [
     # TODO: Add urls
     url(r'^$', views.greeting_page, name='greeting_page'),
     url(r'^login', views.login_page, name='login'),
-    # url(r'password_check', RedirectView.as_view(url='<home>'),permanent=False,),
-    url(r'^password_check', views.password_check, name='checking_password'),
     url(r'^register', views.register_page, name='register'),
     url(r'^set-your-schedule', views.register_schedule_information,
         name='set-your-schedule'),
