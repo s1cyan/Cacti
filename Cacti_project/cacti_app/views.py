@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from forms import RegistrationForm, LoginForm
 from django.contrib.auth.models import User
@@ -6,9 +6,11 @@ from models import ScheduleBlock, Day
 from datetime import datetime
 from schedule import create_day_model
 from forms import RegistrationForm,LoginForm,SearchForm
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login
 from django.core.exceptions import ObjectDoesNotExist
 from forms import DayForm, ScheduleBlockForm
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse_lazy
 import re
 
 
@@ -45,9 +47,14 @@ def login_page(request):
         'home_page':'/cacti_app/home',
         # 'process_password': '/cacti_app/password_check'
     }
-    if request.method=='POST':
-        if password_check(request) is not False:
-            return home(request, password_check(request))
+    if request.method == 'POST':
+        password = request.POST['password']
+        username = request.POST['username']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect('home')
         else:
             print('id/password is incorrect')
             return render(request,'login-page.html',context_dict)
@@ -60,9 +67,11 @@ def login_page(request):
 def password_check(request):
     password = request.POST['password']
     username = request.POST['username']
-    p = authenticate(username=username, password=password)
-    if p is not None:
-        return p
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request,user)
+            return user
     else:
         return False
 # def password_check(request):
@@ -128,7 +137,7 @@ def registration_processing(request):
         except ObjectDoesNotExist:
             User.objects.create_user(username=username, email=email, password=password)
             authenticate(username=username, password=password) #authentication is the logged in check?
-            return thank_you(request)
+            return HttpResponseRedirect('thankyou')
 
 
 def thank_you(request):
@@ -139,7 +148,7 @@ def thank_you(request):
     return render(request, 'ty-page.html', context_dict)
 
 
-def home(request, user_instance):
+def home(request):
     '''
     :param user_instance: User
     :return:
@@ -147,7 +156,10 @@ def home(request, user_instance):
     search_form = SearchForm(request.GET)
     context_dict = {
         'page_title': 'Home',
-        'username': user_instance.username,
+        'username': request.user.username,
+        # 'username':user_instance,
+        # 'username':user_instance.username,
+        # 'username': request.GET.get('username'),
         'form': search_form,
     }
     if request.method == 'GET':
@@ -162,7 +174,7 @@ def home(request, user_instance):
 
             except ObjectDoesNotExist:
                 # make block say not found search_not_found
-                return render(request)
+                return render(request,'home-page.html',context_dict)
         else:
             try:
                 user = User.objects.get(username=search_input)
@@ -172,6 +184,39 @@ def home(request, user_instance):
                 # make block say not found
                 return render(request)
     return render(request, 'home-page.html', context_dict)
+# def home(request, user_instance):
+#     '''
+#     :param user_instance: User
+#     :return:
+#     '''
+#     search_form = SearchForm(request.GET)
+#     context_dict = {
+#         'page_title': 'Home',
+#         'username': user_instance.username,
+#         'form': search_form,
+#     }
+#     if request.method == 'GET':
+#         search_input = request.GET.get('search-form') #(key,None) key = grabs the value in 'search-form'
+#         emailRegex = r'@.*/..*'
+#         emailResult = (emailRegex,input)
+#         if emailResult:
+#             try:
+#                 user = User.objects.get(email=search_input)
+#                 username = user.username
+#                 email = user.email
+#
+#             except ObjectDoesNotExist:
+#                 # make block say not found search_not_found
+#                 return render(request)
+#         else:
+#             try:
+#                 user = User.objects.get(username=search_input)
+#                 username = user.username
+#                 email = user.email
+#             except ObjectDoesNotExist:
+#                 # make block say not found
+#                 return render(request)
+#     return render(request, 'home-page.html', context_dict)
 
 
 def search_page(request):
