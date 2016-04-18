@@ -8,7 +8,7 @@ from forms import RegistrationForm,LoginForm,SearchForm
 from django.contrib.auth import authenticate,login
 from django.core.exceptions import ObjectDoesNotExist
 from forms import DayForm, ScheduleBlockForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 import re
 
 
@@ -124,41 +124,48 @@ def thank_you(request):
 
 
 def home(request):
-    '''
-    :param user_instance: User
+    """
+    :param request
     :return:
-    '''
+    """
     search_form = SearchForm(request.GET)
     context_dict = {
         'page_title': 'Home',
         'username': request.user.username,
         'form': search_form,
     }
+    # search functionality
     if request.method == 'GET':
         search_input = request.GET.get('search-form') #(key,None) key = grabs the value in 'search-form'
         emailRegex = r'@.*/..*'
         emailResult = (emailRegex,input)
         if emailResult:
             try:
-                user = User.objects.get(email=search_input)
-                username = user.username
-                email = user.email
+                friend = User.objects.get(email=search_input)
+                f_username = friend.username
+                f_email = friend.email
+
 
             except ObjectDoesNotExist:
                 # make block say not found search_not_found
                 return render(request,'home-page.html',context_dict)
         else:
             try:
-                user = User.objects.get(username=search_input)
-                username = user.username
-                email = user.email
+                friend = User.objects.get(username=search_input)
+                f_username = friend.username
+                f_email = friend.email
+
             except ObjectDoesNotExist:
                 # make block say not found
-                return render(request)
+                return HttpResponse('cant find ur friend')
     return render(request, 'home-page.html', context_dict)
 
 
 def search_page(request):
+    context_dict = {
+        'friend_username',
+        'friend_email',
+    }
     context_dict = {'page_title': 'Cacti: Search for friends'}
     return render(request, 'search-page.html', context_dict)
 
