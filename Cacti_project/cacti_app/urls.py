@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from . import views
+from . import hidden_views
 
 
 urlpatterns = [
@@ -9,11 +10,12 @@ urlpatterns = [
     url(r'^register', views.register_page, name='register'),
     url(r'^set-your-schedule', views.register_schedule_information,
         name='set-your-schedule'),
-    url(r'^process-schedule', views.process_sched_info, name='process_schedule'),
+    url(r'^process-schedule', views.process_schedule_info, name='process_schedule'),
     url(r'^registration_processing',
         views.registration_processing, name='processing'),
     url(r'^thankyou', views.thank_you, name='thankyou'),
     url(r'home', views.home, name='home'),
     url(r'search', views.search_page, name='search'),
+    url(r'^error', hidden_views.error_message, name='error'),
 ]
 
