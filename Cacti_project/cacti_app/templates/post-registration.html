@@ -66,6 +66,8 @@
                 serializationList.push(jsonObject);
             }
 
+            // TODO: Check if the times conflict.
+
             $.ajax({
                 type: "POST",
                 url: "/cacti_app/process-schedule",
