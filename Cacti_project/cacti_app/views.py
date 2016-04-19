@@ -150,5 +150,6 @@ def process_schedule_info(request):
     :return: None
     """
     print request.POST
-    post_dict = request.POST.dict()
-    print post_dict
+    # TODO: Load the json object as a python readable dictionary.
+    json_post = loads(request.POST['json_data'])
+    print json_post

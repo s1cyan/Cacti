@@ -27,7 +27,8 @@
         var serializationList = [];
 
         // Grab the csrfmiddlewaretoken
-        var csrfToken = $('form:first').getElementsByName('csrfmiddlewaretoken');
+        var csrfToken = $('form:first')[0][0]['value'];
+        console.log(csrfToken);
 
         $('#add').click(function (e) {
             // Get the first instance of the form in the DOM
@@ -49,6 +50,8 @@
             });
 
             clone.appendTo('#form-section');
+            $('#button-section').appendTo('#form-section');
+
             count++;
             e.preventDefault();
         });
