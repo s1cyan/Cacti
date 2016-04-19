@@ -135,38 +135,48 @@ def home(request):
         'form': search_form,
     }
     # search functionality
-    if request.method == 'GET':
-        search_input = request.GET.get('search-form') #(key,None) key = grabs the value in 'search-form'
-        emailRegex = r'@.*/..*'
-        emailResult = (emailRegex,input)
+    user = User.objects.get(username=request.user.username)
+    print ('user', user.email)
+    search_query = request.GET.get('search-form')
+    if search_query:
+    # if request.method == 'GET':
+    #     search_query = request.GET.get('search-form') #(key,None) key = grabs the value in 'search-form'
+    #     emailRegex = r'@.*/..*'
+        print(search_query)
+        emailRegex = r'@'
+        emailResult = re.search(emailRegex,search_query)
         if emailResult:
             try:
-                friend = User.objects.get(email=search_input)
-                f_username = friend.username
-                f_email = friend.email
-
+                friend = User.objects.get(email=search_query)
+                return search_page(request,user,friend)
 
             except ObjectDoesNotExist:
                 # make block say not found search_not_found
-                return render(request,'home-page.html',context_dict)
+                # return render(request,'home-page.html',context_dict)
+                return HttpResponse('cant find ur friend from email')
+
         else:
             try:
-                friend = User.objects.get(username=search_input)
-                f_username = friend.username
-                f_email = friend.email
+                friend = User.objects.get(username=search_query)
+                return search_page(request,user,friend)
+
 
             except ObjectDoesNotExist:
                 # make block say not found
-                return HttpResponse('cant find ur friend')
-    return render(request, 'home-page.html', context_dict)
+                return HttpResponse('cant find ur friend from username')
+    else:
+        return render(request, 'home-page.html', context_dict)
 
 
-def search_page(request):
+def search_page(request,user_instance, friend_instance):
     context_dict = {
-        'friend_username',
-        'friend_email',
+        'page_title':'Cacti: Search for friends',
+        'username': user_instance.username,
+        'friend_username': friend_instance.username,
+        'friend_email': friend_instance.email,
     }
-    context_dict = {'page_title': 'Cacti: Search for friends'}
+    print('Aftersearch:',user_instance.username)
+    print(friend_instance.username)
     return render(request, 'search-page.html', context_dict)
 
 
@@ -200,16 +210,3 @@ def process_sched_info(request):
     except:
         pass
     pass
-
-#
-# def search(request):
-#     input = request.POST['search']
-#     emailRegex = r'@.*/.com'
-#     emailResult = (emailRegex,input)
-#     if emailResult:
-#         try:
-#             User.objects.get(email = input)
-#             return render(request,'search-page.html') #change the contents of the search page to have the user's info
-#
-#         except ObjectDoesNotExist:
-#             return render(request,'search-page.html')# contents = user not found

@@ -1,9 +1,9 @@
-<!--{% extends 'default.html' %}-->
+{% extends 'default.html' %}
 
-<!--{% block body %}-->
+{% block body %}
 
-<!--{% include 'navbar.html' %}-->
-<!--<main>-->
+{% include 'navbar.html' %}
+<main>
 	<br>
 	<br>
 	<div class="row">
@@ -11,14 +11,14 @@
 			<div class="container center-align">
 
 				<img class="responsive-img" src="https://pixabay.com/static/uploads/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" height="100" style="max-width: 240px">
-				<h1>{ friend_username }</h1>
-				<h3>{ friend_email }</h3>
+				<h1>{{ friend_username }}</h1>
+				<h3>{{ friend_email }}</h3>
 
 				<a class="waves-light btn deep-orange">Add</a>
 			</div>
 		</div>
 	</div>
-<!--</main>-->
-<!--{% include 'navbar_jquery.html' %}-->
+</main>
+{% include 'navbar_jquery.html' %}
 
-<!--{% endblock %}-->
+{% endblock %}
