@@ -26,47 +26,63 @@
 
         var serializationList = [];
 
+        // Grab the csrfmiddlewaretoken
+        var csrfToken = $('form:first').getElementsByName('csrfmiddlewaretoken');
+
         $('#add').click(function (e) {
+            // Get the first instance of the form in the DOM
             var source = $('form:first');
             var clone = source.clone();
 
+            // The following for loops below will simply search the duplicated
+            // form and change the IDS, Names, and Labels tags.
             clone.find(':input').attr('id', function(i, val) {
                 return val + count;
             });
 
-            clone.find(':input').attr('id', function (i, val) {
+            clone.find(':input').attr('name', function (i, val) {
                 return val + count;
             });
 
-            clone.appendTo('#form_stuff');
-            $('#button-section').appendTo('#form_stuff');
+            clone.find('label').attr('for', function (i, val) {
+                return val + count;
+            });
+
+            clone.appendTo('#form-section');
             count++;
+            // Append the cloned elements into the array.
+            serializationList.append(clone);
+            // TODO: Remove the csrfmiddlewaretoken from each form.
             e.preventDefault();
         });
 
         $('#ajax-test').click(function (e) {
             var forms = document.getElementsByTagName('form');
-            console.log(forms);
+
+            // For each form in the list, construct JSON objects
             for (var i = 0; i < forms.length; i++) {
                 var jsonObject = makeJSON(forms[i][0]['defaultValue'], forms[i][1]['value'], forms[i][2]['value'], forms[i][3]['value'], forms[i][4]['value']);
                 serializationList.push(jsonObject);
             }
 
-            for (var i = 0; i < serializationList.length; i++) {
-                console.log(serializationList[i]);
-                $.ajax({
-                    type: "POST",
-                    url: "/cacti_app/process-schedule",
-                    data: serializationList[i],
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    },
-                    datatype: "json"
-                });
-            }
+            console.log(serializationList);
+
+            $.ajax({
+                type: "POST",
+                url: "/cacti_app/process-schedule",
+                data: {
+                    'csrfmiddlewaretoken': csrfToken,
+                    'json_data': $('#schedule_form').serializeArray(),
+                    'length': count
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                error : function (err) {
+                    console.log(err);
+                },
+                datatype: "json"
+            });
         });
     });
 </script>

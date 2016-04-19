@@ -9,6 +9,7 @@ from forms import RegistrationForm,LoginForm
 from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist
 from forms import ScheduleBlockForm
+from json import loads
 
 
 def greeting_page(request):
@@ -149,3 +150,5 @@ def process_schedule_info(request):
     :return: None
     """
     print request.POST
+    post_dict = request.POST.dict()
+    print post_dict
