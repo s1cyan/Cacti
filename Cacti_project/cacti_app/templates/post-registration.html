@@ -24,7 +24,8 @@
 
         var count = 0;
 
-        var serializationList = [];
+        var serializationList = []; // Stores all forms serialized.
+        var formCount = []; // Stores the latest ID when a block is added.
 
         // Grab the csrfmiddlewaretoken
         var csrfToken = $('form:first')[0][0]['value'];
@@ -49,11 +50,28 @@
                 return val + count;
             });
 
+            console.log(clone.find('form').attr('id', function (i, val) {
+                return val + count;
+            }));
+            formCount.push(clone[0]['id']);
+
+            clone.attr('id', function (i, val) {
+                return val + count;
+            });
+
+            console.log(clone.attr('id'));
+
             clone.appendTo('#form-section');
             $('#button-section').appendTo('#form-section');
 
             count++;
             e.preventDefault();
+        });
+
+        $('#remove').click(function (e) {
+
+            // Decrement the counter
+            count--;
         });
 
         $('#ajax-test').click(function (e) {
@@ -67,6 +85,9 @@
             }
 
             // TODO: Check if the times conflict.
+            for (var i = 0; i < serializationList.length; i++) {
+
+            }
 
             $.ajax({
                 type: "POST",
