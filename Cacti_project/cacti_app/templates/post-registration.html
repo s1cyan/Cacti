@@ -73,6 +73,7 @@
         $('#remove').click(function (e) {
             // TODO: Get the latest id and remove that element via Jquery.
             // TODO: Pop the last element of the stack.
+            $(formStack.pop()).remove();
             // Decrement the counter
             count--;
         });
@@ -89,7 +90,10 @@
 
             // TODO: Check if the times conflict.
             for (var i = 0; i < serializationList.length; i++) {
-
+                if (!areDatesCorrect(serializationList[i]['start_time'], serializationList[i]['end_time'])) {
+                    // If there are time conflicts, then stop the default action (submit)
+                    e.preventDefault();
+                }
             }
 
             $.ajax({
