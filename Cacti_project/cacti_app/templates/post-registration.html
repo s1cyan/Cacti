@@ -50,29 +50,27 @@
 
             clone.appendTo('#form-section');
             count++;
-            // Append the cloned elements into the array.
-            serializationList.append(clone);
-            // TODO: Remove the csrfmiddlewaretoken from each form.
             e.preventDefault();
         });
 
         $('#ajax-test').click(function (e) {
+            // Get all forms currently in the DOM.
             var forms = document.getElementsByTagName('form');
 
-            // For each form in the list, construct JSON objects
+            // For each form in the list, construct JSON objects and append them to a list.
             for (var i = 0; i < forms.length; i++) {
                 var jsonObject = makeJSON(forms[i][0]['defaultValue'], forms[i][1]['value'], forms[i][2]['value'], forms[i][3]['value'], forms[i][4]['value']);
                 serializationList.push(jsonObject);
             }
-
-            console.log(serializationList);
 
             $.ajax({
                 type: "POST",
                 url: "/cacti_app/process-schedule",
                 data: {
                     'csrfmiddlewaretoken': csrfToken,
-                    'json_data': $('#schedule_form').serializeArray(),
+                    // Make the JSON object into a human readable string.
+                    // TODO: Make sure the view function associated with process-schedule loads the JSON.
+                    'json_data': JSON.stringify(serializationList),
                     'length': count
                 },
                 success: function (data) {
