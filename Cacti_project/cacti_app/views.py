@@ -206,7 +206,6 @@ def process_schedule_info(request):
     :param request: dict
     :return: None
     """
-    print request.POST
     # TODO: Load the json object as a python readable dictionary.
     json_post = loads(request.POST['json_data'])
     print json_post

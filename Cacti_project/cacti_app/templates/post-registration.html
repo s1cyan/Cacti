@@ -56,6 +56,10 @@
                 return val + count;
             });
 
+            // Clean out all the values within the form
+            clone.find("input").val("");
+            clone.find("textarea").val("");
+
             // Move the cloned form to the end of the page.
             clone.appendTo('#form-section');
             // Move the buttons to the end of the form.
