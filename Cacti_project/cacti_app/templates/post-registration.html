@@ -25,11 +25,9 @@
         var count = 0;
 
         var serializationList = []; // Stores all forms serialized.
-        var formStack = []; // Stores the latest ID when a block is added.
 
         // Grab the csrfmiddlewaretoken
         var csrfToken = $('form:first')[0][0]['value'];
-        console.log(csrfToken);
 
         $('#add').click(function (e) {
             // Get the first instance of the form in the DOM
@@ -58,9 +56,6 @@
                 return val + count;
             });
 
-            // Push the duplicated form's ID into the stack.
-            formStack.push(clone.attr('id'));
-
             // Move the cloned form to the end of the page.
             clone.appendTo('#form-section');
             // Move the buttons to the end of the form.
@@ -73,7 +68,7 @@
         $('#remove').click(function (e) {
             // TODO: Get the latest id and remove that element via Jquery.
             // TODO: Pop the last element of the stack.
-            $(formStack.pop()).remove();
+            $('form:last').remove();
             // Decrement the counter
             count--;
         });
