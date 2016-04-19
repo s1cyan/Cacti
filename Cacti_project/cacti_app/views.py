@@ -146,12 +146,9 @@ def home(request):
         emailRegex = r'@'
         emailResult = re.search(emailRegex,search_query)
         if emailResult:
-            print ('emailresult:', search_query)
             try:
                 friend = User.objects.get(email=search_query)
-                # f_username = friend.username
-                # f_email = friend.email
-                return search_page(request,friend)
+                return search_page(request,user,friend)
 
             except ObjectDoesNotExist:
                 # make block say not found search_not_found
@@ -161,10 +158,6 @@ def home(request):
         else:
             try:
                 friend = User.objects.get(username=search_query)
-                # f_username = friend.username
-                # f_email = friend.email
-                # print (friend)
-                # print (f_email)
                 return search_page(request,user,friend)
 
 
@@ -217,16 +210,3 @@ def process_sched_info(request):
     except:
         pass
     pass
-
-#
-# def search(request):
-#     input = request.POST['search']
-#     emailRegex = r'@.*/.com'
-#     emailResult = (emailRegex,input)
-#     if emailResult:
-#         try:
-#             User.objects.get(email = input)
-#             return render(request,'search-page.html') #change the contents of the search page to have the user's info
-#
-#         except ObjectDoesNotExist:
-#             return render(request,'search-page.html')# contents = user not found
