@@ -5,11 +5,12 @@ from models import ScheduleBlock, Day
 from datetime import datetime
 from schedule import create_day_model
 from forms import RegistrationForm,LoginForm,SearchForm
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.core.exceptions import ObjectDoesNotExist
 from forms import ScheduleBlockForm
 from django.http import HttpResponseRedirect, HttpResponse
 from json import loads
+from friendship.models import Friend
 import re
 
 
@@ -176,9 +177,19 @@ def search_page(request,user_instance, friend_instance):
         'friend_username': friend_instance.username,
         'friend_email': friend_instance.email,
     }
-    print('Aftersearch:',user_instance.username)
-    print(friend_instance.username)
+    if request == 'POST':
+        return friend_request(user_instance,friend_instance)
     return render(request, 'search-page.html', context_dict)
+
+
+def friend_request(request, user_instance, friend_instance):
+    #TODO create a template from search that says the request was sent
+    context_dict = {
+        'page_title': 'Cacti',
+        'username':user_instance.username,
+        'friend_username': friend_instance.username,
+    }
+    return render(request,'frequest_sent.html', context_dict)
 
 
 def register_schedule_information(request):
@@ -196,6 +207,8 @@ def register_schedule_information(request):
             'schedule_process': '/cacti_app/process-schedule',
             'form': form
             }
+    print (request.user.is_authenticated())
+    print request.user
     return render(request, 'post-registration.html', context_dict)
 
 
@@ -210,3 +223,8 @@ def process_schedule_info(request):
     # TODO: Load the json object as a python readable dictionary.
     json_post = loads(request.POST['json_data'])
     print json_post
+
+
+def logout_user(request):
+    logout(request)
+    return render(request,'login-page.html')
