@@ -20,7 +20,13 @@
 <!-- Initialization -->
 <script>
 	$(document).ready(function () {
+
+        var enabledClassName = 'waves-effect waves-light btn-large';
+        var disabledClassName = 'btn-large disabled';
+
 		$('select').material_select();
+
+        $('#remove').attr('class', disabledClassName);
 
         var count = 0;
 
@@ -48,10 +54,6 @@
                 return val + count;
             });
 
-            console.log(clone.find('form').attr('id', function (i, val) {
-                return val + count;
-            }));
-
             clone.attr('id', function (i, val) {
                 return val + count;
             });
@@ -65,14 +67,27 @@
             // Move the buttons to the end of the form.
             $('#button-section').appendTo('#form-section');
 
+            if (document.getElementsByTagName('form').length > 1) {
+                $('#remove').attr('class', enabledClassName);
+            }
+
             count++;
             e.preventDefault();
         });
 
         $('#remove').click(function (e) {
-            $('form:last').remove();
-            // Decrement the counter
-            count--;
+
+            if (document.getElementsByTagName('form').length < 2) {
+                $('#remove').attr('class', disabledClassName);
+            }
+            else if (document.getElementsByClassName('form').length == 2) {
+                $('form:last').remove();
+                $('#remove').attr('class', disabledClassName);
+            }
+            else {
+                $('form:last').remove();
+            }
+
         });
 
         $('#ajax-test').click(function (e) {
@@ -85,7 +100,6 @@
                 serializationList.push(jsonObject);
             }
 
-            // TODO: Check if the times conflict.
             for (var i = 0; i < serializationList.length; i++) {
                 if (!areDatesCorrect(serializationList[i]['start_time'], serializationList[i]['end_time'])) {
                     // If there are time conflicts, then stop the default action (submit)

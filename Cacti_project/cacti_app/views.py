@@ -199,13 +199,18 @@ def register_schedule_information(request):
     return render(request, 'post-registration.html', context_dict)
 
 
-def process_schedule_info(request):
+def process_schedule_info(request, user_instance):
     """
     Processes the query dictionary and attempts to create the models needed
     in the database.
     :param request: dict
+    :param user_instance: User
     :return: None
     """
-    # TODO: Load the json object as a python readable dictionary.
-    json_post = loads(request.POST['json_data'])
-    print json_post
+
+    # Grab the list of JSON data from the AJAX post request.
+    list_of_schedules = loads(request.POST['json_data'])
+    user = request.user
+
+    for block in list_of_schedules:
+        pass
