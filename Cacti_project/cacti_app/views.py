@@ -139,7 +139,7 @@ def home(request):
     }
     # search functionality
     user = User.objects.get(username=request.user.username)
-    print ('user', user.email)
+    # print ('user', user.email)
     search_query = request.GET.get('search-form')
     #breaks the input into two scenarios to check 1) by email 2) by username
     if search_query:
@@ -179,8 +179,12 @@ def search_page(request,user_instance, friend_instance):
         'friend_email': friend_instance.email,
         'send_friend_request':'/cactiapp/send_friend_request'
     }
+    print friend_instance.email
     if request.method == 'POST':
+        # users_friend = User.objects.get(friend_instance)
+        print ('request sent to', friend_instance.username)
         Friend.objects.add_friend(request.user, friend_instance)
+        return HttpResponseRedirect('send_friend_request')
     #     # print (Friend.objects.friends(request.user))
     #     # return HttpResponse('request sent?')
     #     # return render_to_response('frequest_sent.html',context_instance=RequestContext(request))
@@ -192,8 +196,11 @@ def search_page(request,user_instance, friend_instance):
 def friend_request(request):
     context_dict = {
         'page_title': 'Request sent!',
+        'username': request.user.username
         # 'friend_username': friend_instance.username,
     }
+    print ('sent requests:',Friend.objects.sent_requests(user=request.user))
+    print ('friends list',Friend.objects.friends(request.user))
     # return HttpResponse('request sent?')
     return render(request,'frequest_sent.html', context_dict)
 #
