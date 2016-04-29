@@ -187,7 +187,6 @@ def search_page(request,user_instance, friend_instance):
         return friend_request(request,user_instance,friend_instance)
         # return HttpResponseRedirect('send_friend_request')
     #     # print (Friend.objects.friends(request.user))
-    #     # return HttpResponse('request sent?')
     #     # return render_to_response('frequest_sent.html',context_instance=RequestContext(request))
     #     # return HttpResponseRedirect('friended')
     #     return friend_request(request,user_instance,friend_instance)
@@ -207,17 +206,6 @@ def friend_request(request, user_instance, friend_instance):
     print ('the request that you sent', Friend.objects.sent_requests((request.user))[latestRequest])
     # return HttpResponse('request sent?')
     return render(request,'frequest_sent.html', context_dict)
-#
-# def friend_request(request, user_instance, friend_instance):
-#     # TODO use friendship package to send friend link.
-#     context_dict = {
-#         'page_title': 'Cacti',
-#         'username': user_instance.username,
-#         'friend_username': friend_instance.username,
-#     }
-#     Friend.objects.add_friend(request.user_instance, friend_instance)
-#     print (Friend.objects.friends(request.user_instance))
-#     return render(request,'frequest_sent.html', context_dict)
 
 
 def register_schedule_information(request):
