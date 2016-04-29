@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from forms import RegistrationForm, LoginForm
 from django.contrib.auth.models import User
 from models import ScheduleBlock, Day
@@ -111,6 +111,7 @@ def registration_processing(request):
             User.objects.get(username=username)
             print ('username already exists')
             return render(request, 'registration.html')
+        # this except - is when the user gets registered
         except ObjectDoesNotExist:
             User.objects.create_user(username=username, email=email, password=password)
             authenticate(username=username, password=password) #authentication is the logged in check?
@@ -140,23 +141,23 @@ def home(request):
     user = User.objects.get(username=request.user.username)
     print ('user', user.email)
     search_query = request.GET.get('search-form')
+    #breaks the input into two scenarios to check 1) by email 2) by username
     if search_query:
-    # if request.method == 'GET':
-    #     search_query = request.GET.get('search-form') #(key,None) key = grabs the value in 'search-form'
-    #     emailRegex = r'@.*/..*'
-        print(search_query)
+        # print(search_query)
         emailRegex = r'@'
         emailResult = re.search(emailRegex,search_query)
+        #search for user by email
         if emailResult:
             try:
                 friend = User.objects.get(email=search_query)
                 return search_page(request,user,friend)
 
             except ObjectDoesNotExist:
+                # TODO make the main block say could not find user
                 # make block say not found search_not_found
                 # return render(request,'home-page.html',context_dict)
                 return HttpResponse('cant find ur friend from email')
-
+        #search for user by username
         else:
             try:
                 friend = User.objects.get(username=search_query)
@@ -164,7 +165,7 @@ def home(request):
 
 
             except ObjectDoesNotExist:
-                # make block say not found
+                # TODO make the main block say could not find user
                 return HttpResponse('cant find ur friend from username')
     else:
         return render(request, 'home-page.html', context_dict)
@@ -176,20 +177,36 @@ def search_page(request,user_instance, friend_instance):
         'username': user_instance.username,
         'friend_username': friend_instance.username,
         'friend_email': friend_instance.email,
+        'send_friend_request':'/cactiapp/send_friend_request'
     }
-    if request == 'POST':
-        return friend_request(user_instance,friend_instance)
+    if request.method == 'POST':
+        Friend.objects.add_friend(request.user, friend_instance)
+    #     # print (Friend.objects.friends(request.user))
+    #     # return HttpResponse('request sent?')
+    #     # return render_to_response('frequest_sent.html',context_instance=RequestContext(request))
+    #     # return HttpResponseRedirect('friended')
+    #     return friend_request(request,user_instance,friend_instance)
     return render(request, 'search-page.html', context_dict)
 
 
-def friend_request(request, user_instance, friend_instance):
-    #TODO create a template from search that says the request was sent
+def friend_request(request):
     context_dict = {
-        'page_title': 'Cacti',
-        'username':user_instance.username,
-        'friend_username': friend_instance.username,
+        'page_title': 'Request sent!',
+        # 'friend_username': friend_instance.username,
     }
+    # return HttpResponse('request sent?')
     return render(request,'frequest_sent.html', context_dict)
+#
+# def friend_request(request, user_instance, friend_instance):
+#     # TODO use friendship package to send friend link.
+#     context_dict = {
+#         'page_title': 'Cacti',
+#         'username': user_instance.username,
+#         'friend_username': friend_instance.username,
+#     }
+#     Friend.objects.add_friend(request.user_instance, friend_instance)
+#     print (Friend.objects.friends(request.user_instance))
+#     return render(request,'frequest_sent.html', context_dict)
 
 
 def register_schedule_information(request):
@@ -207,8 +224,8 @@ def register_schedule_information(request):
             'schedule_process': '/cacti_app/process-schedule',
             'form': form
             }
-    print (request.user.is_authenticated())
-    print request.user
+    # print (request.user.is_authenticated())
+    # print request.user
     return render(request, 'post-registration.html', context_dict)
 
 

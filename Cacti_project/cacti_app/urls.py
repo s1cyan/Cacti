@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^thankyou', views.thank_you, name='thankyou'),
     url(r'home', views.home, name='home'),
     url(r'search', views.search_page, name='search'),
-    url(r'request_sent',views.friend_request,name='friend_request'),
+    url(r'send_friend_request',views.friend_request,name='send_friend_request'),
     url(r'^error', hidden_views.error_message, name='error'),
 ]
 
