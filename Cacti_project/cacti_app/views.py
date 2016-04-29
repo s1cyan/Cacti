@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from models import ScheduleBlock, Day
 from datetime import datetime
 from schedule import create_day_model
-from forms import RegistrationForm,LoginForm,SearchForm
-from django.contrib.auth import authenticate,login
+from forms import RegistrationForm, LoginForm, SearchForm
+from django.contrib.auth import authenticate, login
 from django.core.exceptions import ObjectDoesNotExist
 from forms import ScheduleBlockForm
 from django.http import HttpResponseRedirect, HttpResponse
@@ -43,7 +43,7 @@ def login_page(request):
         'page_title': 'Login',
         'slogan': 'Login to Cacti',
         'form': login_form,
-        'home_page':'/cacti_app/home',
+        'home_page': '/cacti_app/home',
     }
     if request.method == 'POST':
         password = request.POST['password']
@@ -51,11 +51,11 @@ def login_page(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
-                login(request,user)
+                login(request, user)
                 return HttpResponseRedirect('home')
         else:
             print('id/password is incorrect')
-            return render(request,'login-page.html',context_dict)
+            return render(request, 'login-page.html', context_dict)
 
     else:
         return render(request, 'login-page.html', context_dict)
@@ -75,7 +75,7 @@ def register_page(request):
         'slogan': 'Let\'s get you signed up with this service.',
         'show_image': False,
         'form': register_form,
-        'ty_url':'/cactu_app/thankyou',
+        'ty_url': '/cactu_app/thankyou',
         'process_registration': '/cacti_app/registration_processing'
     }
     return render(request, 'registration.html', context_dict)
@@ -99,7 +99,7 @@ def registration_processing(request):
         return register_page(request)
         # return render(request, 'registration.html')
 
-#have to check if email is taken- if not check if username is taken. If you do both at the same time, one not exist will register user
+    # have to check if email is taken- if not check if username is taken. If you do both at the same time, one not exist will register user
     try:
         User.objects.get(email=email)
         print ('email already exists')
@@ -112,7 +112,7 @@ def registration_processing(request):
             return render(request, 'registration.html')
         except ObjectDoesNotExist:
             User.objects.create_user(username=username, email=email, password=password)
-            authenticate(username=username, password=password) #authentication is the logged in check?
+            authenticate(username=username, password=password)  # authentication is the logged in check?
             return HttpResponseRedirect('thankyou')
 
 
@@ -140,16 +140,16 @@ def home(request):
     print ('user', user.email)
     search_query = request.GET.get('search-form')
     if search_query:
-    # if request.method == 'GET':
-    #     search_query = request.GET.get('search-form') #(key,None) key = grabs the value in 'search-form'
-    #     emailRegex = r'@.*/..*'
+        # if request.method == 'GET':
+        #     search_query = request.GET.get('search-form') #(key,None) key = grabs the value in 'search-form'
+        #     emailRegex = r'@.*/..*'
         print(search_query)
         emailRegex = r'@'
-        emailResult = re.search(emailRegex,search_query)
+        emailResult = re.search(emailRegex, search_query)
         if emailResult:
             try:
                 friend = User.objects.get(email=search_query)
-                return search_page(request,user,friend)
+                return search_page(request, user, friend)
 
             except ObjectDoesNotExist:
                 # make block say not found search_not_found
@@ -159,7 +159,7 @@ def home(request):
         else:
             try:
                 friend = User.objects.get(username=search_query)
-                return search_page(request,user,friend)
+                return search_page(request, user, friend)
 
 
             except ObjectDoesNotExist:
@@ -169,14 +169,14 @@ def home(request):
         return render(request, 'home-page.html', context_dict)
 
 
-def search_page(request,user_instance, friend_instance):
+def search_page(request, user_instance, friend_instance):
     context_dict = {
-        'page_title':'Cacti: Search for friends',
+        'page_title': 'Cacti: Search for friends',
         'username': user_instance.username,
         'friend_username': friend_instance.username,
         'friend_email': friend_instance.email,
     }
-    print('Aftersearch:',user_instance.username)
+    print('Aftersearch:', user_instance.username)
     print(friend_instance.username)
     return render(request, 'search-page.html', context_dict)
 
@@ -190,10 +190,10 @@ def register_schedule_information(request):
     """
     form = ScheduleBlockForm(request.POST)
     context_dict = {
-            'page_title': 'Update your schedule',
-            'schedule_url': '/cacti_app/set-your-schedule',
-            'schedule_process': '/cacti_app/process-schedule',
-            }
+        'page_title': 'Update your schedule',
+        'schedule_url': '/cacti_app/set-your-schedule',
+        'schedule_process': '/cacti_app/process-schedule',
+    }
     return render(request, 'post-registration.html', context_dict)
 
 
@@ -208,4 +208,16 @@ def process_schedule_info(request):
     # TODO: Check if the user accessing this page is valid.
     # TODO: Retrieve the list of JSON objects and create the models for the user.
     # TODO: Link all the models to each other.
-    pass
+
+    # If the user is a valid user, perform the following
+    if request.user.is_authenticated():
+        list_of_schedules = loads(request['json_data'])
+        # Iterate through each element in the list_of_schedules
+        # and inject into the database.
+        # TODO: Nest another for loop for each element in the 'weekdays' field to create
+        # TODO: an association.
+        for schedule in list_of_schedules:
+            # TODO: Create the ScheduleBlock
+            # TODO: Create the Day Model
+            # TODO: Associate the Day -> ScheduleBlock -> User
+            pass
