@@ -40,6 +40,8 @@
             var source = $('form:first');
             var clone = source.clone();
 
+            console.log(clone);
+
             // The following for loops below will simply search the duplicated
             // form and change the IDS, Names, and Labels tags.
             clone.find(':input').attr('id', function(i, val) {
@@ -94,9 +96,12 @@
             // Get all forms currently in the DOM.
             var forms = document.getElementsByTagName('form');
 
+            console.log(forms);
+
             // For each form in the list, construct JSON objects and append them to a list.
             for (var i = 0; i < forms.length; i++) {
-                var jsonObject = makeJSON(forms[i][0]['defaultValue'], forms[i][1]['value'], forms[i][2]['value'], forms[i][3]['value'], forms[i][4]['value']);
+                var jsonObject = makeJSON(forms[i][1]['value'], forms[i][2]['value'], forms[i][3]['value'], forms[i][4]['value']);
+
                 serializationList.push(jsonObject);
             }
 

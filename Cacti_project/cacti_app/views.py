@@ -199,7 +199,7 @@ def register_schedule_information(request):
     return render(request, 'post-registration.html', context_dict)
 
 
-def process_schedule_info(request, user_instance):
+def process_schedule_info(request):
     """
     Processes the query dictionary and attempts to create the models needed
     in the database.
@@ -211,6 +211,8 @@ def process_schedule_info(request, user_instance):
     # Grab the list of JSON data from the AJAX post request.
     list_of_schedules = loads(request.POST['json_data'])
     user = request.user
+
+    print list_of_schedules
 
     for block in list_of_schedules:
         pass
