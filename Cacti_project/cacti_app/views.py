@@ -2,8 +2,6 @@ from django.shortcuts import render, redirect
 from forms import RegistrationForm, LoginForm
 from django.contrib.auth.models import User
 from models import ScheduleBlock, Day
-from datetime import datetime
-from schedule import create_day_model
 from forms import RegistrationForm, LoginForm, SearchForm
 from django.contrib.auth import authenticate, login
 from django.core.exceptions import ObjectDoesNotExist
@@ -218,6 +216,13 @@ def process_schedule_info(request):
         # TODO: an association.
         for schedule in list_of_schedules:
             # TODO: Create the ScheduleBlock
+            # TODO: Convert start_time and end_time field into datetime objects
+            schedule_object = ScheduleBlock.objects.create(
+                schedule_name = schedule['schedule_name'],
+                start_time = schedule['start_time'],
+                end_time = schedule['end_time'],
+                schedule_desc = schedule['schedule_description']
+            )
             # TODO: Create the Day Model
             # TODO: Associate the Day -> ScheduleBlock -> User
             pass
