@@ -184,7 +184,8 @@ def search_page(request,user_instance, friend_instance):
         # users_friend = User.objects.get(friend_instance)
         print ('request sent to', friend_instance.username)
         Friend.objects.add_friend(request.user, friend_instance)
-        return HttpResponseRedirect('send_friend_request')
+        return friend_request(request,user_instance,friend_instance)
+        # return HttpResponseRedirect('send_friend_request')
     #     # print (Friend.objects.friends(request.user))
     #     # return HttpResponse('request sent?')
     #     # return render_to_response('frequest_sent.html',context_instance=RequestContext(request))
@@ -193,14 +194,17 @@ def search_page(request,user_instance, friend_instance):
     return render(request, 'search-page.html', context_dict)
 
 
-def friend_request(request):
+def friend_request(request, user_instance, friend_instance):
     context_dict = {
         'page_title': 'Request sent!',
-        'username': request.user.username
+        'username': user_instance.username,
+        'friend_username': friend_instance.username
         # 'friend_username': friend_instance.username,
     }
+    latestRequest = len(Friend.objects.sent_requests(request.user))-1
     print ('sent requests:',Friend.objects.sent_requests(user=request.user))
     print ('friends list',Friend.objects.friends(request.user))
+    print ('the request that you sent', Friend.objects.sent_requests((request.user))[latestRequest])
     # return HttpResponse('request sent?')
     return render(request,'frequest_sent.html', context_dict)
 #
