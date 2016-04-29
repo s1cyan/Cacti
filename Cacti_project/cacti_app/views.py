@@ -184,35 +184,28 @@ def search_page(request,user_instance, friend_instance):
 def register_schedule_information(request):
     """
     Renders the form allowing users to register their schedule information.
-    This function is mapped with process_sched_info(request).
+    This function is mapped with process_schedule_info(request).
     :param request: None
     :return: post-registration.html
     """
-    # TODO: Check if the user is logged in.
     form = ScheduleBlockForm(request.POST)
     context_dict = {
             'page_title': 'Update your schedule',
             'schedule_url': '/cacti_app/set-your-schedule',
             'schedule_process': '/cacti_app/process-schedule',
-            'form': form
             }
     return render(request, 'post-registration.html', context_dict)
 
 
 def process_schedule_info(request):
     """
-    Processes the query dictionary and attempts to create the models needed
-    in the database.
-    :param request: dict
-    :param user_instance: User
+    Checks the request information, extracts the forms' data, and injects
+    the information into the SQL Database via ORM.
+    :param request: request Object
     :return: None
     """
 
-    # Grab the list of JSON data from the AJAX post request.
-    list_of_schedules = loads(request.POST['json_data'])
-    user = request.user
-
-    print list_of_schedules
-
-    for block in list_of_schedules:
-        pass
+    # TODO: Check if the user accessing this page is valid.
+    # TODO: Retrieve the list of JSON objects and create the models for the user.
+    # TODO: Link all the models to each other.
+    pass
