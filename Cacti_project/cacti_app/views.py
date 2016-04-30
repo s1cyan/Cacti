@@ -205,19 +205,21 @@ def request_friend(request, user_instance, friend_instance):
     # latestRequest = len(Friend.objects.sent_requests(request.user))-1
     # print ('sent requests:',Friend.objects.sent_requests(user=request.user))
     # print ('the request that you sent', Friend.objects.sent_requests(request.user)[latestRequest])
-    return render(request,'frequest_sent.html', context_dict)
+    return render(request, 'frequest_sent.html', context_dict)
 
 
-def friends(request):
+def view_friends(request):
     # displays all friends and pending friend requests
     # TODO: Reject/Accept friend requests
     # TODO: do something about the modal ids?
     friend_requests = []
+    friends = []
 
     context_dict = {
         'page_title': 'Cacti: Friends',
         'username': request.user.username,
-        'friend_requests': friend_requests
+        'friend_requests': friend_requests,
+        'friends_list':friends
     }
     for friend_request in Friend.objects.unread_requests(request.user):
         request_sentence = str(friend_request)
@@ -227,8 +229,31 @@ def friends(request):
         friend_requests.append(requester)
         request.name = requester.username
 
-    # if request.username+'_deny' in request.POST:
+    for user in Friend.objects.friends(request.user):
+        friends.append(user)
 
+    if request.method == 'POST':
+        # TODO accept/deny
+        if request.POST.get('accept'):
+            friend_name = request.POST.get('accept','')
+            friend = User.objects.get(username=friend_name)
+            new_relationship = Friend.objects.add_friend(request.user,friend)
+            new_relationship.accept()
+            return render(request,'friends_page.html',context_dict)
+
+
+        elif request.POST.get('deny'):
+            not_friend_name = request.POST.get('deny','')
+            not_friend = User.objects.get(username=not_friend_name)
+            temp_relationship = Friend.objects.add_friend(request.user,not_friend)
+            temp_relationship.accept()
+            Friend.objects.remove_friend(request.user,not_friend)
+            return render(request,'friends_page.html',context_dict)
+
+
+
+
+    # if request.username+'_deny' in request.POST:
 
     return render(request,'friends_page.html',context_dict)
 
