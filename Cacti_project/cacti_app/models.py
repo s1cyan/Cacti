@@ -26,6 +26,5 @@ class ScheduleBlock(models.Model):
     day = models.ForeignKey(Day)
     user = models.ForeignKey(User)
 
-    # Allows ease of debugging by returning an identifier.
     def __unicode__(self):
         return self.schedule_name

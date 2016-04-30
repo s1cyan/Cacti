@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from forms import ScheduleBlockForm
 from django.http import HttpResponseRedirect, HttpResponse
 from json import loads
+from string_converter import convert_to_datetime
 import re
 
 
@@ -215,14 +216,17 @@ def process_schedule_info(request):
         # TODO: Nest another for loop for each element in the 'weekdays' field to create
         # TODO: an association.
         for schedule in list_of_schedules:
-            # TODO: Create the ScheduleBlock
-            # TODO: Convert start_time and end_time field into datetime objects
+            # TODO: Create the Day Model iff the Day Model doesn't exist
+            # TODO: otherwise, assign the User to the Day model.
+
+            # TODO: Create the ScheduleBlock with all of the association
             schedule_object = ScheduleBlock.objects.create(
-                schedule_name = schedule['schedule_name'],
-                start_time = schedule['start_time'],
-                end_time = schedule['end_time'],
-                schedule_desc = schedule['schedule_description']
+                schedule_name=schedule['schedule_name'],
+                start_time=convert_to_datetime(schedule['start_time']),
+                end_time=convert_to_datetime(schedule['end_time']),
+                schedule_desc=schedule['schedule_description'],
+                day=None,
+                user=request.user,
             )
-            # TODO: Create the Day Model
             # TODO: Associate the Day -> ScheduleBlock -> User
             pass
