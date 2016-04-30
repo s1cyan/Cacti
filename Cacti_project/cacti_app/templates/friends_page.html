@@ -11,13 +11,14 @@
 				<h3>Requests</h3>
 
 				<ul class="collection">
-					{% for request in friend_request %}
+
+					{% for request in friend_requests %}
 					<li class="collection-item black-text">
 						<div>
-							{{ request.name }}
+							{{ request.username }}
 							<div class="secondary-content ">
-									<a class="waves-effect waves-light deep-orange btn">Add</a>
-									<a class="waves-effect waves-light grey btn">Deny</a>
+									<a class="waves-effect waves-light deep-orange btn" >Add</a>
+									<a class="waves-effect waves-light grey btn" >Deny</a>
 
 							</div>
 						</div>
@@ -30,14 +31,6 @@
 					<a class="collection-item modal-trigger waves-effect waves-light black-text" href="#modal1">
 						<div>{{ friend.name }}</div>
 					</a>
-
-					<div id="{{ modal_id }}" class="modal modal-fixed-footer">
-						<div class="modal-content">
-							<h4>{{ friend.name }}</h4>
-							<p>Calendar</p>
-							<div class="waves-light grey btn">Delete friend</div>
-						</div>
-					</div>
 
 					<a class="collection-item modal-trigger waves-effect waves-light black-text" href="#modal2">ᕕ(ᐛ)ᕗ ᕕ(ᐛ)ᕗ   </a>
 					<div id="{{ modal_id }}" class="modal modal-fixed-footer">

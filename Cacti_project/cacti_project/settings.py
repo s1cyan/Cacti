@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cacti_app',
+    'friendship',
 ]
 
 MIDDLEWARE_CLASSES = [
