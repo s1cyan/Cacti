@@ -140,6 +140,10 @@ def home(request):
     # search functionality
     user = User.objects.get(username=request.user.username)
     # print ('user', user.email)
+    #TRYING TO GET ALL THE USERS
+    # users = User.objects.all()
+    # print users
+
     search_query = request.GET.get('search-form')
     #breaks the input into two scenarios to check 1) by email 2) by username
     if search_query:
@@ -172,6 +176,13 @@ def home(request):
 
 
 def search_page(request,user_instance, friend_instance):
+    """
+    results of user search for a friend, if send request button is used, friend request is sent
+    :param request:
+    :param user_instance: user
+    :param friend_instance: friend? idk how to use these
+    :return: search-page.html
+    """
     context_dict = {
         'page_title':'Cacti: Search for friends',
         'username': user_instance.username,
@@ -184,7 +195,7 @@ def search_page(request,user_instance, friend_instance):
         # users_friend = User.objects.get(friend_instance)
         print ('request sent to', friend_instance.username)
         Friend.objects.add_friend(request.user, friend_instance)
-        return friend_request(request,user_instance,friend_instance)
+        return request_friend(request,user_instance,friend_instance)
         # return HttpResponseRedirect('send_friend_request')
     #     # print (Friend.objects.friends(request.user))
     #     # return render_to_response('frequest_sent.html',context_instance=RequestContext(request))
@@ -193,19 +204,54 @@ def search_page(request,user_instance, friend_instance):
     return render(request, 'search-page.html', context_dict)
 
 
-def friend_request(request, user_instance, friend_instance):
+def request_friend(request, user_instance, friend_instance):
+    # Just renders the sent friend request page
     context_dict = {
         'page_title': 'Request sent!',
         'username': user_instance.username,
         'friend_username': friend_instance.username
-        # 'friend_username': friend_instance.username,
     }
-    latestRequest = len(Friend.objects.sent_requests(request.user))-1
-    print ('sent requests:',Friend.objects.sent_requests(user=request.user))
-    print ('friends list',Friend.objects.friends(request.user))
-    print ('the request that you sent', Friend.objects.sent_requests((request.user))[latestRequest])
-    # return HttpResponse('request sent?')
+    # latestRequest = len(Friend.objects.sent_requests(request.user))-1
+    # print ('sent requests:',Friend.objects.sent_requests(user=request.user))
+    # print ('the request that you sent', Friend.objects.sent_requests(request.user)[latestRequest])
     return render(request,'frequest_sent.html', context_dict)
+
+
+def friends(request):
+    # displays all friends and pending friend requests
+    # TODO: Display all friends + pending friend requests
+    # TODO: Reject/Accept friend requests
+    # TODO: do something about the modal ids?
+    friend_requests=[]
+
+    context_dict = {
+        'page_title': 'Cacti: Friends',
+        'username': request.user.username,
+        'friend_requests': friend_requests
+        # 'friend_requests': Friend.objects.unread_requests(request.user)
+    }
+    # users = User.objects.all()
+    # print users
+    for friend_request in Friend.objects.unread_requests(request.user):
+        request_sentence = str(friend_request)
+        cleanedout_sentence = request_sentence.replace('#','')
+        sentence_parts = cleanedout_sentence.split(' ')
+        requester_id = int(sentence_parts[1])
+        requester = User.objects.get(id=requester_id)
+        friend_requests.append(requester)
+        request.name = requester.username
+
+
+    print friend_requests
+    # userFriendRegex = r'#([0-9]+) (.+)#([0-9]+)'
+    # print userFriendRegex
+    # parse_users = re.search(userFriendRegex,request_sentences[0])
+    # print ('user1#:',parse_users.group(1), 'user2#:', parse_users.group(2))
+
+
+    # for request in friend_requests:
+        # print (request)
+    return render(request,'friends_page.html',context_dict)
 
 
 def register_schedule_information(request):
