@@ -250,12 +250,18 @@ def view_friends(request):
             Friend.objects.remove_friend(request.user,not_friend)
             return render(request,'friends_page.html',context_dict)
 
-
-
-
     # if request.username+'_deny' in request.POST:
 
     return render(request,'friends_page.html',context_dict)
+
+
+def view_profile(request):
+    context_dict = {
+        'page_title':'User:Profile',
+        'username':request.user.username,
+        'user_email': request.user.email
+    }
+    return render(request,'profile.html',context_dict)
 
 
 def register_schedule_information(request):
