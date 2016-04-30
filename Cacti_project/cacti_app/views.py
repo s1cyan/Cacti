@@ -139,10 +139,6 @@ def home(request):
     }
     # search functionality
     user = User.objects.get(username=request.user.username)
-    # print ('user', user.email)
-    #TRYING TO GET ALL THE USERS
-    # users = User.objects.all()
-    # print users
 
     search_query = request.GET.get('search-form')
     #breaks the input into two scenarios to check 1) by email 2) by username
@@ -196,11 +192,6 @@ def search_page(request,user_instance, friend_instance):
         print ('request sent to', friend_instance.username)
         Friend.objects.add_friend(request.user, friend_instance)
         return request_friend(request,user_instance,friend_instance)
-        # return HttpResponseRedirect('send_friend_request')
-    #     # print (Friend.objects.friends(request.user))
-    #     # return render_to_response('frequest_sent.html',context_instance=RequestContext(request))
-    #     # return HttpResponseRedirect('friended')
-    #     return friend_request(request,user_instance,friend_instance)
     return render(request, 'search-page.html', context_dict)
 
 
@@ -219,38 +210,26 @@ def request_friend(request, user_instance, friend_instance):
 
 def friends(request):
     # displays all friends and pending friend requests
-    # TODO: Display all friends + pending friend requests
     # TODO: Reject/Accept friend requests
     # TODO: do something about the modal ids?
-    friend_requests=[]
+    friend_requests = []
 
     context_dict = {
         'page_title': 'Cacti: Friends',
         'username': request.user.username,
         'friend_requests': friend_requests
-        # 'friend_requests': Friend.objects.unread_requests(request.user)
     }
-    # users = User.objects.all()
-    # print users
     for friend_request in Friend.objects.unread_requests(request.user):
         request_sentence = str(friend_request)
-        cleanedout_sentence = request_sentence.replace('#','')
-        sentence_parts = cleanedout_sentence.split(' ')
+        sentence_parts = request_sentence.replace('#','').split(' ')
         requester_id = int(sentence_parts[1])
         requester = User.objects.get(id=requester_id)
         friend_requests.append(requester)
         request.name = requester.username
 
-
-    print friend_requests
-    # userFriendRegex = r'#([0-9]+) (.+)#([0-9]+)'
-    # print userFriendRegex
-    # parse_users = re.search(userFriendRegex,request_sentences[0])
-    # print ('user1#:',parse_users.group(1), 'user2#:', parse_users.group(2))
+    # if request.username+'_deny' in request.POST:
 
 
-    # for request in friend_requests:
-        # print (request)
     return render(request,'friends_page.html',context_dict)
 
 
