@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, render_to_response
 from forms import RegistrationForm, LoginForm
 from django.contrib.auth.models import User
+from models import UserHelper
 from models import ScheduleBlock, Day
 from datetime import datetime
 from schedule import create_day_model
-from forms import RegistrationForm,LoginForm,SearchForm
+from forms import RegistrationForm,LoginForm,SearchForm, PictureForm
 from django.contrib.auth import authenticate,login,logout
 from django.core.exceptions import ObjectDoesNotExist
 from forms import ScheduleBlockForm
@@ -100,7 +101,7 @@ def registration_processing(request):
         return register_page(request)
         # return render(request, 'registration.html')
 
-#have to check if email is taken- if not check if username is taken. If you do both at the same time, one not exist will register user
+# have to check if email is taken- if not check if username is taken. If you do both at the same time, one not exist will register user
     try:
         User.objects.get(email=email)
         print ('email already exists')
@@ -141,12 +142,12 @@ def home(request):
     user = User.objects.get(username=request.user.username)
 
     search_query = request.GET.get('search-form')
-    #breaks the input into two scenarios to check 1) by email 2) by username
+    # breaks the input into two scenarios to check 1) by email 2) by username
     if search_query:
         # print(search_query)
         emailRegex = r'@'
         emailResult = re.search(emailRegex,search_query)
-        #search for user by email
+        # search for user by email
         if emailResult:
             try:
                 friend = User.objects.get(email=search_query)
@@ -157,7 +158,7 @@ def home(request):
                 # make block say not found search_not_found
                 # return render(request,'home-page.html',context_dict)
                 return HttpResponse('cant find ur friend from email')
-        #search for user by username
+        # search for user by username
         else:
             try:
                 friend = User.objects.get(username=search_query)
@@ -188,7 +189,6 @@ def search_page(request,user_instance, friend_instance):
     }
     print friend_instance.email
     if request.method == 'POST':
-        # users_friend = User.objects.get(friend_instance)
         print ('request sent to', friend_instance.username)
         Friend.objects.add_friend(request.user, friend_instance)
         return request_friend(request,user_instance,friend_instance)
@@ -210,8 +210,8 @@ def request_friend(request, user_instance, friend_instance):
 
 def view_friends(request):
     # displays all friends and pending friend requests
-    # TODO: Reject/Accept friend requests
     # TODO: do something about the modal ids?
+
     friend_requests = []
     friends = []
 
@@ -222,6 +222,7 @@ def view_friends(request):
         'friends_list':friends
     }
     for friend_request in Friend.objects.unread_requests(request.user):
+        # cleans out the string from django-friendship Ex: "User #15 sent a request to #1"
         request_sentence = str(friend_request)
         sentence_parts = request_sentence.replace('#','').split(' ')
         requester_id = int(sentence_parts[1])
@@ -233,24 +234,21 @@ def view_friends(request):
         friends.append(user)
 
     if request.method == 'POST':
-        # TODO accept/deny
         if request.POST.get('accept'):
-            friend_name = request.POST.get('accept','')
+            friend_name = request.POST.get('accept','') # gets the value associated with the "accept" from POST request
             friend = User.objects.get(username=friend_name)
             new_relationship = Friend.objects.add_friend(request.user,friend)
             new_relationship.accept()
             return render(request,'friends_page.html',context_dict)
 
-
         elif request.POST.get('deny'):
+            #there's no reject function with django-friendship. So deny friend and then unfriends :p
             not_friend_name = request.POST.get('deny','')
             not_friend = User.objects.get(username=not_friend_name)
             temp_relationship = Friend.objects.add_friend(request.user,not_friend)
             temp_relationship.accept()
             Friend.objects.remove_friend(request.user,not_friend)
             return render(request,'friends_page.html',context_dict)
-
-    # if request.username+'_deny' in request.POST:
 
     return render(request,'friends_page.html',context_dict)
 
@@ -259,10 +257,25 @@ def view_profile(request):
     context_dict = {
         'page_title':'User:Profile',
         'username':request.user.username,
-        'user_email': request.user.email
+        'user_email': request.user.email,
     }
+
+    if request.methdod == 'POST':
+        form = PictureForm(request.POST, request.Files)
     return render(request,'profile.html',context_dict)
 
+
+def upload_pic(request):
+    if request.method == 'POST':
+        form = PictureForm(request.POST, request.FILES)
+        if form.is_valid():
+            idk = request.user
+            user_helper = UserHelper.user(request.user)
+            # cacti_user = User.objects.get(request.user)
+            # cacti_user.
+            # m.model_pic = form.cleaned_data['image']
+            # m.save()
+            return HttpResponse('image upload success')
 
 def register_schedule_information(request):
     """

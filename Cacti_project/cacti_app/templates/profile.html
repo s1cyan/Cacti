@@ -11,6 +11,16 @@
 			<div class="col s5 deep-orange lighten-2 center">
 				<p><img class="responsive-img" src="https://pixabay.com/static/uploads/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" height="100" style="max-width: 240px">
 				</p>
+				<form action="{% url upload_pic %}" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+						<p>
+                    <input id="id_image" type="file" class="waves-effect waves-light btn" name="profile_pic"/>
+                </p>
+                <input type="submit" value="Submit" />
+				</form>
+				<!--<p>-->
+					<!--<button class="waves-effect waves-light btn"> Change Picture </button>-->
+				<!--</p>-->
 			</div>
 			<div class="col s7 m6">
 				<h3>{{ username }}</h3>

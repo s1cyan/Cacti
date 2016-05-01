@@ -47,3 +47,7 @@ class LoginForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     search_input = forms.CharField(max_length=64)
+
+
+class PictureForm(forms.Form):
+    profile_pic = forms.ImageField()
