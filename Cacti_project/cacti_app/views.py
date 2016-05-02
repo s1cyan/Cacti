@@ -250,6 +250,13 @@ def view_friends(request):
             Friend.objects.remove_friend(request.user,not_friend)
             return render(request,'friends_page.html',context_dict)
 
+        elif request.POST.get('delete_friend'):
+            df = request.POST.get('delete_friend','')
+            friend_to_delete = User.objects.get(username = df)
+            Friend.objects.remove_friend(friend_to_delete,request.user)
+            return render(request,'friends_page.html',context_dict)
+
+
     return render(request,'friends_page.html',context_dict)
 
 

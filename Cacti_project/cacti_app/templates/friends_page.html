@@ -44,20 +44,16 @@
 							<p> Calender </p>
 							</div>
 							<div class="modal-footer">
-								<button class="waves-light grey btn"> Delete friend</button>
+								<form method="POST">
+									{% csrf_token %}
+
+									<button class="waves-light grey btn" name="delete_friend" value="{{ friend.username }}"> Delete friend</button>
+
+								</form>
 									</div>
 								</div>
 
 					{% endfor %}
-
-					<!--<a class="collection-item modal-trigger waves-effect waves-light black-text" href="#modal2">ᕕ(ᐛ)ᕗ ᕕ(ᐛ)ᕗ   </a>-->
-					<!--<div id="{{ modal_id }}" class="modal modal-fixed-footer">-->
-						<!--<div class="modal-content">-->
-							<!--<h4>{{ friend.username }}</h4>-->
-							<!--<p>Calendar</p>-->
-							<!--<div class="waves-light grey btn">Delete friend</div>-->
-						<!--</div>-->
-					<!--</div>-->
 
 				</ul>
 
