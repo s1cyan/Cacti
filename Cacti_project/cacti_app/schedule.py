@@ -1,3 +1,6 @@
+from models import ScheduleBlock, Day
+
+
 def associate_user_schedule(list_of_schedules, user):
     """
     Creates all of the day and schedule models in the database, if the
@@ -8,4 +11,14 @@ def associate_user_schedule(list_of_schedules, user):
     :return: None
     """
     schedule_list = list_of_schedules
+    for schedule in schedule_list:
+        pass
+    pass
+
+
+def get_or_create_days():
+    """
+    Wrapper function around Django's get_or_create function.
+    :return: None
+    """
     pass
