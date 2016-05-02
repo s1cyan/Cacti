@@ -34,15 +34,21 @@
 				<ul class="collection">
 					{% for friend in friends_list %}
 					<!--TODO figure out the modal stuff-->
-					<a class="collection-item modal-trigger waves-effect waves-light black-text" href="#modal1">
-						{{ friend.username }}
-						<div id="{{ friend.username}}" class="modal modal-fixed-footer"></div>
+					<!--Trigger-->
+					<a class="collection-item modal-trigger waves-effect waves-light black-text" href="#{{ friend.username }}">
+						{{ friend.username }}</a>
+					<!---->
+						<div id="{{ friend.username }}" class="modal modal-fixed-footer">
 						<div class="modal-content">
 							<h4> {{ friend.username }}</h4>
 							<p> Calender </p>
-							<div class="waves-light grey btn"> Delete friend</div>
-						</div>
-					</a>
+							</div>
+							<div class="modal-footer">
+								<button class="waves-light grey btn"> Delete friend</button>
+									</div>
+								</div>
+
+					{% endfor %}
 
 					<!--<a class="collection-item modal-trigger waves-effect waves-light black-text" href="#modal2">ᕕ(ᐛ)ᕗ ᕕ(ᐛ)ᕗ   </a>-->
 					<!--<div id="{{ modal_id }}" class="modal modal-fixed-footer">-->
@@ -53,7 +59,6 @@
 						<!--</div>-->
 					<!--</div>-->
 
-					{% endfor %}
 				</ul>
 
 			</div>
@@ -64,6 +69,8 @@
 {% include "scripts.html" %}
 
 {% include "navbar_jquery.html" %}
+
+{% include "modal_jquery.html" %}
 
 
 {% endblock %}
