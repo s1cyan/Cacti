@@ -1,4 +1,5 @@
 from models import ScheduleBlock, Day
+from string_converter import convert_to_datetime
 
 
 def associate_user_schedule(list_of_schedules, user):
@@ -12,7 +13,16 @@ def associate_user_schedule(list_of_schedules, user):
     """
     schedule_list = list_of_schedules
     for schedule in schedule_list:
-        pass
+        # TODO: Query the Day model from the database.
+        # Create the schedule_object in the database
+        schedule_object, is_create = ScheduleBlock.objects.get_or_create(
+            schedule_name=schedule['schedule_name'],
+            start_time=convert_to_datetime(schedule['start_time']),
+            end_time=convert_to_datetime(schedule_list['start_time']),
+            schedule_desc=schedule['schedule_description'],
+            user=user
+        )
+
     pass
 
 
