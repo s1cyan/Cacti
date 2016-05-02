@@ -6,7 +6,7 @@ from django.utils import timezone
 
 # Create your models here.
 class Day(models.Model):
-    day = models.IntegerField()
+    day = models.CharField()
     user = models.ForeignKey(User)
     
 
