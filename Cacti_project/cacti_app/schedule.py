@@ -13,7 +13,8 @@ def associate_user_schedule(list_of_schedules, user):
     """
     schedule_list = list_of_schedules
     for schedule in schedule_list:
-        # TODO: Query the Day model from the database.
+        # Create all of the days if the models don't exist in the DB
+        get_or_create_days()
         # Create the schedule_object in the database
         schedule_object, is_create = ScheduleBlock.objects.get_or_create(
             schedule_name=schedule['schedule_name'],
@@ -22,7 +23,12 @@ def associate_user_schedule(list_of_schedules, user):
             schedule_desc=schedule['schedule_description'],
             user=user
         )
+        schedule_object.save()
 
+        for day_name in schedule['weekdays']:
+            day_object = Day.objects.get(day=day_name)
+            day_object.save()
+            day_object.user = user
     pass
 
 
@@ -41,4 +47,5 @@ def get_or_create_days():
         'Sunday'
     ]
     for day in list_of_days:
-        Day.objects.get_or_create(day=day)
+        # Create the Day models and save them.
+        Day.objects.get_or_create(day=day).save()
