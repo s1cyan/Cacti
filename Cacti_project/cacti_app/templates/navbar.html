@@ -37,7 +37,10 @@
 		</div>
 		<!--<li><a href="#">Status</a></li>-->
 		<li>
-			<div class=" valign-wrapper">
+			<form method="POST">
+				{% csrf_token %}
+
+				<div class=" valign-wrapper">
 				<a class="valign white-text" href="#"></a>
 				<div class="switch">
 					<label class="white-text">Available
@@ -47,12 +50,13 @@
 
 					</label>
 				</div>
+					</div>
+			</form>
 
-			</div>
+
 
 
 		</li>
-		<!--TODO Maps the nav things to their pages-->
 		<li> <a class="white-text" href="home">Home</a></li>
 		<li><a class="white-text" href="profile">Profile</a></li>
 		<li><a class="white-text" href="friends">Friends</a></li>

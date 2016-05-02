@@ -5,8 +5,8 @@ from models import UserHelper
 from models import ScheduleBlock, Day
 from datetime import datetime
 from schedule import create_day_model
-from forms import RegistrationForm,LoginForm,SearchForm, PictureForm
-from django.contrib.auth import authenticate,login,logout
+from forms import RegistrationForm, LoginForm, SearchForm, PictureForm
+from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from forms import ScheduleBlockForm
 from django.http import HttpResponseRedirect, HttpResponse
@@ -45,7 +45,7 @@ def login_page(request):
         'page_title': 'Login',
         'slogan': 'Login to Cacti',
         'form': login_form,
-        'home_page':'/cacti_app/home',
+        'home_page': '/cacti_app/home',
     }
     if request.method == 'POST':
         password = request.POST['password']
@@ -53,11 +53,11 @@ def login_page(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
-                login(request,user)
+                login(request, user)
                 return HttpResponseRedirect('home')
         else:
             print('id/password is incorrect')
-            return render(request,'login-page.html',context_dict)
+            return render(request, 'login-page.html', context_dict)
 
     else:
         return render(request, 'login-page.html', context_dict)
@@ -77,7 +77,7 @@ def register_page(request):
         'slogan': 'Let\'s get you signed up with this service.',
         'show_image': False,
         'form': register_form,
-        'ty_url':'/cactu_app/thankyou',
+        'ty_url': '/cactu_app/thankyou',
         'process_registration': '/cacti_app/registration_processing'
     }
     return render(request, 'registration.html', context_dict)
@@ -101,7 +101,7 @@ def registration_processing(request):
         return register_page(request)
         # return render(request, 'registration.html')
 
-# have to check if email is taken- if not check if username is taken. If you do both at the same time, one not exist will register user
+    # have to check if email is taken- if not check if username is taken. If you do both at the same time, one not exist will register user
     try:
         User.objects.get(email=email)
         print ('email already exists')
@@ -115,7 +115,7 @@ def registration_processing(request):
         # this except - is when the user gets registered
         except ObjectDoesNotExist:
             User.objects.create_user(username=username, email=email, password=password)
-            authenticate(username=username, password=password) #authentication is the logged in check?
+            authenticate(username=username, password=password)  # authentication is the logged in check?
             return HttpResponseRedirect('thankyou')
 
 
@@ -139,40 +139,42 @@ def home(request):
         'form': search_form,
     }
     # search functionality
+    found = False
     user = User.objects.get(username=request.user.username)
 
     search_query = request.GET.get('search-form')
     # breaks the input into two scenarios to check 1) by email 2) by username
     if search_query:
-        # print(search_query)
         emailRegex = r'@'
-        emailResult = re.search(emailRegex,search_query)
+        emailResult = re.search(emailRegex, search_query)
+
         # search for user by email
         if emailResult:
             try:
                 friend = User.objects.get(email=search_query)
-                return search_page(request,user,friend)
+                found = True
+                return search_page(request, user, friend, found)
 
             except ObjectDoesNotExist:
-                # TODO make the main block say could not find user
                 # make block say not found search_not_found
                 # return render(request,'home-page.html',context_dict)
-                return HttpResponse('cant find ur friend from email')
+                return search_page(request, user, user, found)
+                # return HttpResponse('cant find ur friend from email')
+            
         # search for user by username
         else:
             try:
                 friend = User.objects.get(username=search_query)
-                return search_page(request,user,friend)
-
+                found = True
+                return search_page(request, user, friend, found)
 
             except ObjectDoesNotExist:
-                # TODO make the main block say could not find user
-                return HttpResponse('cant find ur friend from username')
+                return search_page(request, user , user, found)
     else:
         return render(request, 'home-page.html', context_dict)
 
 
-def search_page(request,user_instance, friend_instance):
+def search_page(request, user_instance, friend_instance, found):
     """
     results of user search for a friend, if send request button is used, friend request is sent
     :param request:
@@ -181,17 +183,18 @@ def search_page(request,user_instance, friend_instance):
     :return: search-page.html
     """
     context_dict = {
-        'page_title':'Cacti: Search for friends',
+        'page_title': 'Cacti: Search for friends',
         'username': user_instance.username,
         'friend_username': friend_instance.username,
         'friend_email': friend_instance.email,
-        'send_friend_request':'/cactiapp/send_friend_request'
+        'send_friend_request': '/cactiapp/send_friend_request',
+        'found': found
     }
     print friend_instance.email
     if request.method == 'POST':
         print ('request sent to', friend_instance.username)
         Friend.objects.add_friend(request.user, friend_instance)
-        return request_friend(request,user_instance,friend_instance)
+        return request_friend(request, user_instance, friend_instance)
     return render(request, 'search-page.html', context_dict)
 
 
@@ -219,12 +222,12 @@ def view_friends(request):
         'page_title': 'Cacti: Friends',
         'username': request.user.username,
         'friend_requests': friend_requests,
-        'friends_list':friends
+        'friends_list': friends
     }
     for friend_request in Friend.objects.unread_requests(request.user):
         # cleans out the string from django-friendship Ex: "User #15 sent a request to #1"
         request_sentence = str(friend_request)
-        sentence_parts = request_sentence.replace('#','').split(' ')
+        sentence_parts = request_sentence.replace('#', '').split(' ')
         requester_id = int(sentence_parts[1])
         requester = User.objects.get(id=requester_id)
         friend_requests.append(requester)
@@ -235,41 +238,41 @@ def view_friends(request):
 
     if request.method == 'POST':
         if request.POST.get('accept'):
-            friend_name = request.POST.get('accept','') # gets the value associated with the "accept" from POST request
+            friend_name = request.POST.get('accept',
+                                           '')  # gets the value associated with the "accept" from POST request
             friend = User.objects.get(username=friend_name)
-            new_relationship = Friend.objects.add_friend(request.user,friend)
+            new_relationship = Friend.objects.add_friend(request.user, friend)
             new_relationship.accept()
-            return render(request,'friends_page.html',context_dict)
+            return render(request, 'friends_page.html', context_dict)
 
         elif request.POST.get('deny'):
-            #there's no reject function with django-friendship. So deny friend and then unfriends :p
-            not_friend_name = request.POST.get('deny','')
+            # there's no reject function with django-friendship. So deny friend and then unfriends :p
+            not_friend_name = request.POST.get('deny', '')
             not_friend = User.objects.get(username=not_friend_name)
-            temp_relationship = Friend.objects.add_friend(request.user,not_friend)
+            temp_relationship = Friend.objects.add_friend(request.user, not_friend)
             temp_relationship.accept()
-            Friend.objects.remove_friend(request.user,not_friend)
-            return render(request,'friends_page.html',context_dict)
+            Friend.objects.remove_friend(request.user, not_friend)
+            return render(request, 'friends_page.html', context_dict)
 
         elif request.POST.get('delete_friend'):
-            df = request.POST.get('delete_friend','')
-            friend_to_delete = User.objects.get(username = df)
-            Friend.objects.remove_friend(friend_to_delete,request.user)
-            return render(request,'friends_page.html',context_dict)
+            df = request.POST.get('delete_friend', '')
+            friend_to_delete = User.objects.get(username=df)
+            Friend.objects.remove_friend(friend_to_delete, request.user)
+            return render(request, 'friends_page.html', context_dict)
 
-
-    return render(request,'friends_page.html',context_dict)
+    return render(request, 'friends_page.html', context_dict)
 
 
 def view_profile(request):
     context_dict = {
-        'page_title':'User:Profile',
-        'username':request.user.username,
+        'page_title': 'User:Profile',
+        'username': request.user.username,
         'user_email': request.user.email,
     }
 
     if request.methdod == 'POST':
         form = PictureForm(request.POST, request.Files)
-    return render(request,'profile.html',context_dict)
+    return render(request, 'profile.html', context_dict)
 
 
 def upload_pic(request):
@@ -284,6 +287,7 @@ def upload_pic(request):
             # m.save()
             return HttpResponse('image upload success')
 
+
 def register_schedule_information(request):
     """
     Renders the form allowing users to register their schedule information.
@@ -294,11 +298,11 @@ def register_schedule_information(request):
     # TODO: Check if the user is logged in.
     form = ScheduleBlockForm(request.POST)
     context_dict = {
-            'page_title': 'Update your schedule',
-            'schedule_url': '/cacti_app/set-your-schedule',
-            'schedule_process': '/cacti_app/process-schedule',
-            'form': form
-            }
+        'page_title': 'Update your schedule',
+        'schedule_url': '/cacti_app/set-your-schedule',
+        'schedule_process': '/cacti_app/process-schedule',
+        'form': form
+    }
     # print (request.user.is_authenticated())
     # print request.user
     return render(request, 'post-registration.html', context_dict)
@@ -319,4 +323,4 @@ def process_schedule_info(request):
 
 def logout_user(request):
     logout(request)
-    return render(request,'login-page.html')
+    return render(request, 'login-page.html')
