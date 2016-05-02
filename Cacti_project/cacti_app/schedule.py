@@ -21,4 +21,14 @@ def get_or_create_days():
     Wrapper function around Django's get_or_create function.
     :return: None
     """
-    pass
+    list_of_days = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday'
+    ]
+    for day in list_of_days:
+        Day.objects.get_or_create(day=day)
