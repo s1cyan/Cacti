@@ -1,4 +1,5 @@
 from models import ScheduleBlock, Day
+# TODO: Rename the string_converter python script.
 from string_converter import convert_to_datetime
 
 
@@ -16,6 +17,7 @@ def associate_user_schedule(list_of_schedules, user):
         # Create all of the days if the models don't exist in the DB
         get_or_create_days()
         # Create the schedule_object in the database
+        # TODO: Assign the ScheduleBlock the day and user model.
         schedule_object, is_create = ScheduleBlock.objects.get_or_create(
             schedule_name=schedule['schedule_name'],
             start_time=convert_to_datetime(schedule['start_time']),
@@ -29,7 +31,6 @@ def associate_user_schedule(list_of_schedules, user):
             day_object = Day.objects.get(day=day_name)
             day_object.save()
             day_object.user = user
-    pass
 
 
 def get_or_create_days():

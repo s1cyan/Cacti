@@ -24,7 +24,7 @@ class ScheduleBlock(models.Model):
     start_time = models.TimeField(default=timezone.now())
     end_time = models.TimeField(default=timezone.now())
     day = models.ForeignKey(Day)
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
 
     def __unicode__(self):
         return self.schedule_name

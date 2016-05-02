@@ -202,29 +202,7 @@ def process_schedule_info(request):
     :param request: request Object
     :return: None
     """
-
-    # TODO: Check if the user accessing this page is valid.
-    # TODO: Retrieve the list of JSON objects and create the models for the user.
-    # TODO: Link all the models to each other.
-
-    # If the user is a valid user, perform the following
     if request.user.is_authenticated():
         list_of_schedules = loads(request['json_data'])
-        # Iterate through each element in the list_of_schedules
-        # and inject into the database.
-
-        # TODO: Nest another for loop for each element in the 'weekdays' field to create
-        # TODO: an association.
-        for schedule in list_of_schedules:
-            # TODO: Create the Day Model iff the Day Model doesn't exist
-            # TODO: otherwise, assign the User to the Day model.
-            # TODO: Create the ScheduleBlock with all of the association
-            schedule_object = ScheduleBlock.objects.create(
-                schedule_name=schedule['schedule_name'],
-                start_time=convert_to_datetime(schedule['start_time']),
-                end_time=convert_to_datetime(schedule['end_time']),
-                schedule_desc=schedule['schedule_description'],
-                day=None,
-                user=request.user,
-            )
-            # TODO: Associate the Day -> ScheduleBlock -> User
+    else:
+        return None
