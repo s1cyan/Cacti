@@ -53,10 +53,10 @@ def login_page(request):
                 return HttpResponseRedirect('home')
         else:
             print('id/password is incorrect')
-            return render(request, 'login-page.html', context_dict)
+            return render(request, 'login_page.html', context_dict)
 
     else:
-        return render(request, 'login-page.html', context_dict)
+        return render(request, 'login_page.html', context_dict)
 
 
 def register_page(request):
@@ -85,7 +85,7 @@ def registration_processing(request):
     checks if email/username for registration is already in database
     :param request:
     :return: if password confirmation is incorrect and if username/email is already used : registration.html
-            else: ty-page.html
+            else: ty_page.html
     """
     username = request.POST['username']
     email = request.POST['email']
@@ -119,7 +119,7 @@ def thank_you(request):
         'page_title': 'Thanks!',
         # 'continue_url_INVIEWS': '/cacti_app/home'
     }
-    return render(request, 'ty-page.html', context_dict)
+    return render(request, 'ty_page.html', context_dict)
 
 
 def home(request):
@@ -151,7 +151,7 @@ def home(request):
 
             except ObjectDoesNotExist:
                 # make block say not found search_not_found
-                # return render(request,'home-page.html',context_dict)
+                # return render(request,'home_page.html',context_dict)
                 return HttpResponse('cant find ur friend from email')
 
         else:
@@ -164,7 +164,7 @@ def home(request):
                 # make block say not found
                 return HttpResponse('cant find ur friend from username')
     else:
-        return render(request, 'home-page.html', context_dict)
+        return render(request, 'home_page.html', context_dict)
 
 
 def search_page(request, user_instance, friend_instance):
@@ -176,7 +176,7 @@ def search_page(request, user_instance, friend_instance):
     }
     print('Aftersearch:', user_instance.username)
     print(friend_instance.username)
-    return render(request, 'search-page.html', context_dict)
+    return render(request, 'search_page.html', context_dict)
 
 
 def register_schedule_information(request):
@@ -184,7 +184,7 @@ def register_schedule_information(request):
     Renders the form allowing users to register their schedule information.
     This function is mapped with process_schedule_info(request).
     :param request: None
-    :return: post-registration.html
+    :return: register_schedule.html
     """
     if request.user.is_authenticated():
         context_dict = {
@@ -192,8 +192,12 @@ def register_schedule_information(request):
             'schedule_url': '/cacti_app/set-your-schedule',
             'schedule_process': '/cacti_app/process-schedule',
         }
-        return render(request, 'post-registration.html', context_dict)
+        return render(request, 'register_schedule.html', context_dict)
     else:
+        # TODO: Return a page with a link to the login/register page.
+        context_dict = {
+
+        }
         return None
 
 
