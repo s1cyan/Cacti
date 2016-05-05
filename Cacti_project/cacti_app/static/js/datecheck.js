@@ -17,4 +17,8 @@ function areDatesCorrect(startDate, endDate) {
     );
    
     return dateStart < dateEnd;
-};
+}
+
+function AreScheduleNamesSame(previousForm, nextForm) {
+}
+

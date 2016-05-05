@@ -1,63 +1,69 @@
 from models import ScheduleBlock, Day
+# TODO: Rename the string_converter python script.
+from string_converter import convert_to_datetime
 
 
-def create_day_model(days_list, schedule_model):
+def associate_user_schedule(list_of_schedules, user):
     """
-    Associates the days inputted in from post-registration.html for the 'Days'
-    field wih an integer compliant to datetime.isonweekday().
-    :param days_list: list, list of days
-    :param schedule_model: ScheduleBlock
+    Creates all of the day and schedule models in the database, if the
+    models don't exist already and associates all the Day, ScheduleBlock, and Users
+    together.
+    :param list_of_schedules: list
+    :param user: User object
+    :return: None
     """
-    day_dict = {
-        'Monday': 1,
-        'Tuesday': 2,
-        'Wednesday': 3,
-        'Thursday': 4,
-        'Friday': 5,
-        'Saturday': 6,
-        'Sunday': 7
-    }
-    for day in days_list:
-        day_obj = Day.objects.create(date=str(day_dict[day]),
-                                     schedule_block=schedule_model)
+    schedule_list = list_of_schedules
+    for schedule in schedule_list:
+        # Create all of the days if the models don't exist in the DB
+        get_or_create_days()
+        # Create the schedule_object in the database
+        # TODO: Assign the ScheduleBlock the day and user model.
+        schedule_object, is_created = ScheduleBlock.objects.get_or_create(
+            schedule_name=schedule['schedule_name'],
+            start_time=convert_to_datetime(schedule['start_time']),
+            end_time=convert_to_datetime(schedule['end_time']),
+            schedule_desc=schedule['schedule_description'],
+            user=user
+        )
+
+        print schedule_object
+
+        # Save the ScheduleBlock
+        schedule_object.save()
+
+        weekdays = str(schedule['weekdays']).split(',')
+        for each in weekdays:
+            print 'Day: %s | Type: %s' % (each, type(each))
+
+        for day_name in weekdays:
+            day_name = day_name.strip(' ')
+            print day_name
+            # TODO: Get the day object
+            day_object = Day.objects.get(day=day_name)
+            # TODO: Add the user to the Day object
+            day_object.user.add(user)
+            # TODO: Add the Day object to the ScheduleBlock
+            schedule_object.day.add(day_object)
+            # TODO: Save the objects.
+            day_object.save()
+            schedule_object.save()
 
 
-def process_sched_info(querydict):
+def get_or_create_days():
     """
-    Processes the query dictionary and attempts to create the models needed
-    in the database.
-    :param querydict: dict
-    :return: dict
+    Wrapper function around Django's get_or_create function.
+    :return: None
     """
-    # TODO: Check if the start time is less than the end time.
-    # TODO: Do logic processing, if the form is correct return the user to the
-    # right page, if not, spit out error
-    # TODO: Delete from the database.
-    post_dict = querydict.POST
-    # Convert the string into actual datetime objects.
-    start_time = datetime.strptime(post_dict['start_time'], '%H:%M').time()
-    end_time = datetime.strptime(post_dict['end_time'], '%H:%M').time()
-
-    if start_time < end_time:
-        try:
-            # If there is already an existing schedule block taking up
-            # that timeframe, return the User back to the original page.
-            sched_obj = ScheduleBlock.objects.get(
-                schedule_name=post_dict['sched_name'],
-                schedule_description=post_dict['sched_desc'],
-                start_time=start_time,
-                end_time=end_time
-            )
-            # TODO: Return the dictionary with the errors.
-            return render(request, 'post-registration.html', {})
-        except:
-            sched_obj = ScheduleBlock.objects.create(schedule_name=post_dict['sched_name'],
-                                                     schedule_desc=post_dict[
-                                                         'sched_desc'],
-                                                     start_time=start_time,
-                                                     end_time=end_time
-                                                     )
-            create_day_model(post_dict.getlist('days'), sched_obj)
-            # TODO: Return the user to the page.
-    else:
-        return register_schedule_information(request)
+    list_of_days = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday'
+    ]
+    for day in list_of_days:
+        # Create the Day models and save them.
+        day, created = Day.objects.get_or_create(day=day)
+        day.save()

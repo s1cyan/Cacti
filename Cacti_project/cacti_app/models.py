@@ -6,26 +6,28 @@ from django.utils import timezone
 
 # Create your models here.
 class Day(models.Model):
-    day = models.IntegerField()
-    user = models.ForeignKey(User)
+    day = models.CharField(max_length=9)
+    user = models.ManyToManyField(User)
+
+    # Return the identifier for the Day model
+    def __unicode__(self):
+        return self.day
     
 
 class UserHelper(models.Model):
-    friends = models.ManyToManyField("self")
     picture = models.ImageField(upload_to='pfps/')
     status = models.BooleanField()
-    phone_number = models.IntegerField(max_length=11)
     user = models.OneToOneField(User)
 
 
 class ScheduleBlock(models.Model):
     schedule_name = models.CharField(max_length=10, primary_key=True)
     schedule_desc = models.CharField(max_length=128)
-    start_time = models.TimeField(default=timezone.now())
-    end_time = models.TimeField(default=timezone.now())
-    day = models.ForeignKey(Day)
-    user = models.ForeignKey(User)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    day = models.ManyToManyField(Day)
+    user = models.OneToOneField(User)
 
-    # Allows ease of debugging by returning an identifier.
+    # Return the identifier for the ScheduleBlock
     def __unicode__(self):
         return self.schedule_name
