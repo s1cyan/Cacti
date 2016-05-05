@@ -17,7 +17,9 @@ urlpatterns = [
     url(r'home', views.home, name='home'),
     url(r'search', views.search_page, name='search'),
     url(r'send_friend_request',views.request_friend,name='send_friend_request'),
-    url(r'friends', views.friends, name='friends'),
+    url(r'friends', views.view_friends, name='friends'),
+    url(r'profile',views.view_profile ,name='profile'),
+
     url(r'^error', hidden_views.error_message, name='error'),
 ]
 
