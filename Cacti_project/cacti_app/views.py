@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from forms import ScheduleBlockForm
 from django.http import HttpResponseRedirect, HttpResponse
 from json import loads
-from string_converter import convert_to_datetime
+from schedule import associate_user_schedule
 import re
 
 
@@ -190,15 +190,16 @@ def register_schedule_information(request):
         context_dict = {
             'page_title': 'Update your schedule',
             'schedule_url': '/cacti_app/set-your-schedule',
-            'schedule_process': '/cacti_app/process-schedule',
+            'process_url': '/cacti_app/process-schedule',
         }
         return render(request, 'register_schedule.html', context_dict)
     else:
         # TODO: Return a page with a link to the login/register page.
         context_dict = {
-
+            'slogan': 'Looks like something went wrong...please login to use this service.',
+            'redirect_url': '/cacti_app/login'
         }
-        return None
+        return render(request, 'redirect_page.html', context_dict)
 
 
 def process_schedule_info(request):
@@ -208,7 +209,5 @@ def process_schedule_info(request):
     :param request: request Object
     :return: None
     """
-    if request.user.is_authenticated():
-        list_of_schedules = loads(request['json_data'])
-    else:
-        return None
+    list_of_schedules = loads(request['json_data'])
+    associate_user_schedule(list_of_schedules, request.user)
