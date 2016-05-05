@@ -40,8 +40,6 @@
                 var source = $('form:first');
                 var clone = source.clone();
 
-                console.log(clone);
-
                 // The following for loops below will simply search the duplicated
                 // form and change the IDS, Names, and Labels tags.
                 clone.find(':input').attr('id', function (i, val) {
@@ -123,11 +121,11 @@
                     data: {
                         'csrfmiddlewaretoken': csrfToken,
                         // Make the JSON object into a human readable string.
-                        // TODO: Make sure the view function associated with process-schedule loads the JSON.
                         'json_data': JSON.stringify(serializationList)
                     },
                     success: function (data) {
                         console.log(data);
+                        $(location).attr('href', 'cacti_app/home')
                     },
                     error: function (err) {
                         console.log(err);

@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from json import loads
 from schedule import associate_user_schedule
 import re
+from django.core.urlresolvers import reverse
 
 
 def greeting_page(request):
@@ -210,4 +211,4 @@ def process_schedule_info(request):
     list_of_schedules = loads(request.POST['json_data'])
     associate_user_schedule(list_of_schedules, request.user)
     # Redirect the user back to the homepage
-    return HttpResponseRedirect('home')
+    return HttpResponseRedirect(reverse('home'))
