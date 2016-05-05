@@ -186,13 +186,15 @@ def register_schedule_information(request):
     :param request: None
     :return: post-registration.html
     """
-    form = ScheduleBlockForm(request.POST)
-    context_dict = {
-        'page_title': 'Update your schedule',
-        'schedule_url': '/cacti_app/set-your-schedule',
-        'schedule_process': '/cacti_app/process-schedule',
-    }
-    return render(request, 'post-registration.html', context_dict)
+    if request.user.is_authenticated():
+        context_dict = {
+            'page_title': 'Update your schedule',
+            'schedule_url': '/cacti_app/set-your-schedule',
+            'schedule_process': '/cacti_app/process-schedule',
+        }
+        return render(request, 'post-registration.html', context_dict)
+    else:
+        return None
 
 
 def process_schedule_info(request):

@@ -18,19 +18,23 @@ def associate_user_schedule(list_of_schedules, user):
         get_or_create_days()
         # Create the schedule_object in the database
         # TODO: Assign the ScheduleBlock the day and user model.
-        schedule_object, is_create = ScheduleBlock.objects.get_or_create(
+        schedule_object, is_created = ScheduleBlock.objects.get_or_create(
             schedule_name=schedule['schedule_name'],
             start_time=convert_to_datetime(schedule['start_time']),
-            end_time=convert_to_datetime(schedule_list['start_time']),
+            end_time=convert_to_datetime(schedule_list['end_time']),
             schedule_desc=schedule['schedule_description'],
-            user=user
+            user=user,
         )
+
+        # Save the ScheduleBlock
         schedule_object.save()
 
         for day_name in schedule['weekdays']:
-            day_object = Day.objects.get(day=day_name)
-            day_object.save()
-            day_object.user = user
+            # TODO: Get the day object
+            # TODO: Add the user to the Day object
+            # TODO: Add the Day object to the ScheduleBlock
+            # TODO: Save the objects.
+            pass
 
 
 def get_or_create_days():
