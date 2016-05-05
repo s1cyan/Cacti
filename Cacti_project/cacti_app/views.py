@@ -62,12 +62,10 @@ def login_page(request):
 def register_page(request):
     """
     Renders the registration page and allows the user to create an account.
-
     :param request: POST
     :return: registration.html
     """
     register_form = RegistrationForm(request.POST)
-    # print request.POST
     context_dict = {
         'page_title': 'Registration',
         'slogan': 'Let\'s get you signed up with this service.',
@@ -98,6 +96,7 @@ def registration_processing(request):
         # return render(request, 'registration.html')
 
     # have to check if email is taken- if not check if username is taken. If you do both at the same time, one not exist will register user
+    # TODO: Perform the login and redirect the page to a specific url.
     try:
         User.objects.get(email=email)
         print ('email already exists')
@@ -211,3 +210,4 @@ def process_schedule_info(request):
     """
     list_of_schedules = loads(request['json_data'])
     associate_user_schedule(list_of_schedules, request.user)
+    return HttpResponse("Processed")
