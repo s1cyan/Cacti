@@ -9,18 +9,29 @@
 	<div class="row">
 		<div class="col s12 grey lighten-2">
 			<div class="col s5 deep-orange lighten-2 center">
-				<p><img class="responsive-img" src="https://pixabay.com/static/uploads/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" height="100" style="max-width: 240px">
+				<p><img class="responsive-img"
+						src= "/images/{{ user.get_profile.u_pfp }}" height="100" style="max-width: 240px">
+						<!--src="https://pixabay.com/static/uploads/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"-->
 				</p>
-				<form action="{% url upload_pic %}" method="POST" enctype="multipart/form-data">
+
+
+				<form action="" method="POST" enctype="multipart/form-data">
 					{% csrf_token %}
-						<p>
-                    <input id="id_image" type="file" class="waves-effect waves-light btn" name="profile_pic"/>
-                </p>
-                <input type="submit" value="Submit" />
+					<div class="file-field input-field">
+						<div class="waves-effect waves-light btn"> New Picture
+							<input type="file">
+						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text">
+						</div>
+					</div>
+					<button class="waves-effect waves-light btn" type="submit" name="pfp-upload"
+							value="{{ username }}"> Submit
+
+					</button>
+
 				</form>
-				<!--<p>-->
-					<!--<button class="waves-effect waves-light btn"> Change Picture </button>-->
-				<!--</p>-->
+
 			</div>
 			<div class="col s7 m6">
 				<h3>{{ username }}</h3>

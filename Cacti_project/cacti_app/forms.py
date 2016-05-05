@@ -50,4 +50,8 @@ class SearchForm(forms.Form):
 
 
 class PictureForm(forms.Form):
-    profile_pic = forms.ImageField()
+    pfp = forms.ImageField()
+
+    class Meta:
+        model = UserHelper
+        fields = ('pfps')

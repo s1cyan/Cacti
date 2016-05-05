@@ -12,7 +12,7 @@ class Day(models.Model):
 
 class UserHelper(models.Model):
     friends = models.ManyToManyField("self")
-    picture = models.ImageField(upload_to='profile_pictures/')
+    picture = models.ImageField(upload_to='pfps/')
     status = models.BooleanField()
     phone_number = models.IntegerField(max_length=11)
     user = models.OneToOneField(User)

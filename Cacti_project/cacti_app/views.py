@@ -9,6 +9,7 @@ from forms import RegistrationForm, LoginForm, SearchForm, PictureForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from forms import ScheduleBlockForm
+from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponse
 from json import loads
 from friendship.models import Friend
@@ -160,7 +161,7 @@ def home(request):
                 # return render(request,'home-page.html',context_dict)
                 return search_page(request, user, user, found)
                 # return HttpResponse('cant find ur friend from email')
-            
+
         # search for user by username
         else:
             try:
@@ -190,7 +191,6 @@ def search_page(request, user_instance, friend_instance, found):
         'send_friend_request': '/cactiapp/send_friend_request',
         'found': found
     }
-    print friend_instance.email
     if request.method == 'POST':
         print ('request sent to', friend_instance.username)
         Friend.objects.add_friend(request.user, friend_instance)
@@ -238,54 +238,69 @@ def view_friends(request):
 
     if request.method == 'POST':
         if request.POST.get('accept'):
-            friend_name = request.POST.get('accept',
-                                           '')  # gets the value associated with the "accept" from POST request
+            friend_name = request.POST.get('accept', '')  # gets the value associated with the "accept" from POST request
             friend = User.objects.get(username=friend_name)
             new_relationship = Friend.objects.add_friend(request.user, friend)
             new_relationship.accept()
-            return render(request, 'friends_page.html', context_dict)
+            # return HttpResponseRedirect(reverse_lazy('friends_page.html'))
+            # return render(request, 'friends_page.html', context_dict)
+            return HttpResponseRedirect('friends')
+
 
         elif request.POST.get('deny'):
-            # there's no reject function with django-friendship. So deny friend and then unfriends :p
+            # there's no reject function with django-friendship. So accept and then unfriend :p
             not_friend_name = request.POST.get('deny', '')
             not_friend = User.objects.get(username=not_friend_name)
             temp_relationship = Friend.objects.add_friend(request.user, not_friend)
             temp_relationship.accept()
             Friend.objects.remove_friend(request.user, not_friend)
-            return render(request, 'friends_page.html', context_dict)
+            # return HttpResponseRedirect(reverse_lazy('view_friends'))
+            return HttpResponseRedirect('friends')
+            # return render(request, 'friends_page.html', context_dict)
 
         elif request.POST.get('delete_friend'):
             df = request.POST.get('delete_friend', '')
             friend_to_delete = User.objects.get(username=df)
             Friend.objects.remove_friend(friend_to_delete, request.user)
-            return render(request, 'friends_page.html', context_dict)
+            return HttpResponseRedirect('friends')
+           # return HttpResponseRedirect(reverse_lazy('view_friends'))
+            # return render(request, 'friends_page.html', context_dict)
 
     return render(request, 'friends_page.html', context_dict)
 
 
 def view_profile(request):
+    pfp_form= PictureForm(request.POST, request.FILES)
+    # TODO pfp file form
     context_dict = {
         'page_title': 'User:Profile',
         'username': request.user.username,
         'user_email': request.user.email,
+        'form': pfp_form
     }
+    if request.method == 'POST':
+        if pfp_form.is_valid():
+            u = User.objects.get(username=request.user.username)
+            u_pfp = u.get_profile().picture(docfile=request.FILES['picture'])
+            u_pfp.save()
+            return HttpResponseRedirect(reverse('view_profile'))
+        else:
+            pfp_form = PictureForm() #returns empty form?
 
-    if request.methdod == 'POST':
-        form = PictureForm(request.POST, request.Files)
     return render(request, 'profile.html', context_dict)
 
 
-def upload_pic(request):
-    if request.method == 'POST':
-        form = PictureForm(request.POST, request.FILES)
-        if form.is_valid():
-            idk = request.user
-            user_helper = UserHelper.user(request.user)
-            # cacti_user = User.objects.get(request.user)
-            # cacti_user.
-            # m.model_pic = form.cleaned_data['image']
-            # m.save()
-            return HttpResponse('image upload success')
+# def upload_pic(request):
+#     if request.method == 'POST':
+#         form = PictureForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             idk = request.user
+#             user_helper = UserHelper.user(request.user)
+#             # cacti_user = User.objects.get(request.user)
+#             # cacti_user.
+#             # m.model_pic = form.cleaned_data['image']
+#             # m.save()
+#             return HttpResponse('image upload success')
 
 
 def register_schedule_information(request):

@@ -88,6 +88,9 @@ DATABASES = {
     }
 }
 
+# stores pfps uploaded
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -107,6 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_PROFILE_MODULE = 'cacti_app.UserHelper'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
