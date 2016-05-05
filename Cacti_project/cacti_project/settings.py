@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_PROFILE_MODULE = 'cacti_app.UserHelper'
+# AUTH_PROFILE_MODULE = 'cacti_app.UserHelper'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

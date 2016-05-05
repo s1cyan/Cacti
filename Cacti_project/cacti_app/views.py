@@ -116,6 +116,7 @@ def registration_processing(request):
         # this except - is when the user gets registered
         except ObjectDoesNotExist:
             User.objects.create_user(username=username, email=email, password=password)
+            UserHelper.objects.create(user=request.user)
             authenticate(username=username, password=password)  # authentication is the logged in check?
             return HttpResponseRedirect('thankyou')
 
@@ -246,7 +247,6 @@ def view_friends(request):
             # return render(request, 'friends_page.html', context_dict)
             return HttpResponseRedirect('friends')
 
-
         elif request.POST.get('deny'):
             # there's no reject function with django-friendship. So accept and then unfriend :p
             not_friend_name = request.POST.get('deny', '')
@@ -270,10 +270,14 @@ def view_friends(request):
 
 
 def view_profile(request):
-    pfp_form= PictureForm(request.POST, request.FILES)
     # TODO pfp file form
+    u = User.objects.get(username=request.user)
+    pfp_form= PictureForm(request.POST, request.FILES)
+    u_helper = UserHelper.objects.get(user=u)
+    u_pfp = u_helper.picture
     context_dict = {
         'page_title': 'User:Profile',
+        'user_pfp': u_pfp,
         'username': request.user.username,
         'user_email': request.user.email,
         'form': pfp_form
@@ -281,9 +285,9 @@ def view_profile(request):
     if request.method == 'POST':
         if pfp_form.is_valid():
             u = User.objects.get(username=request.user.username)
-            u_pfp = u.get_profile().picture(docfile=request.FILES['picture'])
+            u_pfp = u.picture(docfile=request.FILES['picture'])
             u_pfp.save()
-            return HttpResponseRedirect(reverse('view_profile'))
+            return HttpResponseRedirect('profile')
         else:
             pfp_form = PictureForm() #returns empty form?
 
