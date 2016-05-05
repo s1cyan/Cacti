@@ -109,7 +109,9 @@ def registration_processing(request):
             return render(request, 'registration.html')
         except ObjectDoesNotExist:
             User.objects.create_user(username=username, email=email, password=password)
-            authenticate(username=username, password=password)  # authentication is the logged in check?
+            authenticated_user = authenticate(username=username, password=password)
+            # Log in the user after being authenticated.
+            login(request, authenticated_user)
             return HttpResponseRedirect('thankyou')
 
 
@@ -157,8 +159,6 @@ def home(request):
             try:
                 friend = User.objects.get(username=search_query)
                 return search_page(request, user, friend)
-
-
             except ObjectDoesNotExist:
                 # make block say not found
                 return HttpResponse('cant find ur friend from username')
@@ -193,7 +193,6 @@ def register_schedule_information(request):
         }
         return render(request, 'register_schedule.html', context_dict)
     else:
-        # TODO: Return a page with a link to the login/register page.
         context_dict = {
             'slogan': 'Looks like something went wrong...please login to use this service.',
             'redirect_url': '/cacti_app/login'
@@ -208,6 +207,7 @@ def process_schedule_info(request):
     :param request: request Object
     :return: None
     """
-    list_of_schedules = loads(request['json_data'])
+    list_of_schedules = loads(request.POST['json_data'])
     associate_user_schedule(list_of_schedules, request.user)
-    return HttpResponse("Processed")
+    # Redirect the user back to the homepage
+    return HttpResponseRedirect('home')
