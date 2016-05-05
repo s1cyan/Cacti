@@ -31,10 +31,14 @@ def associate_user_schedule(list_of_schedules, user):
 
         for day_name in schedule['weekdays']:
             # TODO: Get the day object
+            day_object = Day.objects.get(day=day_name)
             # TODO: Add the user to the Day object
+            day_object.user.add(user)
             # TODO: Add the Day object to the ScheduleBlock
+            schedule_object.day.add(day_object)
             # TODO: Save the objects.
-            pass
+            day_object.save()
+            schedule_object.save()
 
 
 def get_or_create_days():
